@@ -695,6 +695,21 @@ export default function App() {
       {/* Checkout / Pricing Section */}
       <section id="checkout" className="price-section">
         <div className="container fade-in">
+          {/* Testimonio Real WhatsApp */}
+          <div className="max-w-md mx-auto mb-10 text-center">
+            <p className="text-white font-bold text-base sm:text-lg mb-3 tracking-tight">
+              Esta persona es menos inteligente que tú y logra esto en menos de 10 minutos al día:
+            </p>
+            <div className="relative rounded-2xl overflow-hidden border border-emerald-500/30 shadow-[0_0_30px_rgba(16,185,129,0.15)] bg-[#0d1117] p-1.5 transition-transform duration-300 hover:scale-[1.01]">
+              <img
+                src="/assets/aistudio/IMG_8802_f8004541.jpg"
+                alt="Testimonio de cliente generando ingresos con videos virales"
+                className="w-full h-auto rounded-xl object-contain shadow-md"
+                loading="lazy"
+              />
+            </div>
+          </div>
+
           <h2 className="text-center">Aprovechá esta oferta antes de que suba el precio</h2>
           <div className="price-card">
             <picture>
