@@ -134,6 +134,8 @@ export default function App() {
     timeAgo: 12,
   });
 
+  const [liveViewers, setLiveViewers] = useState(74);
+
   useEffect(() => {
     trackEvent('PageView');
     const formatted = new Date().toLocaleDateString('es-ES', {
@@ -142,6 +144,20 @@ export default function App() {
       year: 'numeric',
     });
     setCurrentDate(formatted);
+  }, []);
+
+  useEffect(() => {
+    const viewerInterval = setInterval(() => {
+      setLiveViewers((prev) => {
+        const delta = Math.floor(Math.random() * 5) - 2; // -2 to +2
+        const next = prev + delta;
+        if (next < 64) return 66 + Math.floor(Math.random() * 4);
+        if (next > 96) return 92 - Math.floor(Math.random() * 4);
+        return next;
+      });
+    }, 3800);
+
+    return () => clearInterval(viewerInterval);
   }, []);
 
   useEffect(() => {
@@ -266,6 +282,19 @@ export default function App() {
       <section className="hero">
         <div className="container fade-in">
           <div className="pre-headline">🔥 +250.000 VIDEOS VIRALES — LISTOS PARA PUBLICAR</div>
+
+          {/* Contador en vivo rojo con punto pulsante */}
+          <div className="flex justify-center -mt-1 mb-7">
+            <div className="inline-flex items-center gap-2 sm:gap-2.5 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-red-950/75 border border-red-500/60 shadow-[0_0_25px_rgba(239,68,68,0.35)] text-red-400 text-xs sm:text-sm font-semibold tracking-wide">
+              <span className="relative flex h-2.5 w-2.5 shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+              </span>
+              <span>
+                <strong className="text-red-200 font-black">{liveViewers} personas</strong> están viendo esta página y adquiriendo el pack ahora mismo
+              </span>
+            </div>
+          </div>
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.18] max-w-5xl mx-auto mb-8">
             Imagina{' '}
             <span className="bg-gradient-to-r from-amber-200 via-amber-400 to-yellow-500 bg-clip-text text-transparent">
