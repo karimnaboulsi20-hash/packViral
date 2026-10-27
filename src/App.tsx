@@ -127,6 +127,7 @@ export default function App() {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [currentDate, setCurrentDate] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
   const [buyerInfo, setBuyerInfo] = useState({
     name: 'Andrés',
@@ -201,6 +202,7 @@ export default function App() {
       vid.setAttribute('webkit-playsinline', 'true');
     });
 
+    // 300px margin enables video to be ready and playing BEFORE user scrolls to it
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -217,34 +219,18 @@ export default function App() {
           }
         });
       },
-      { rootMargin: '100px 0px 100px 0px', threshold: 0.1 }
+      { rootMargin: '300px 0px 300px 0px', threshold: 0.05 }
     );
 
     videoElements.forEach((vid) => observer.observe(vid));
 
-    const handleUserInteraction = () => {
-      videoElements.forEach((vid) => {
-        const rect = vid.getBoundingClientRect();
-        if (rect.top < window.innerHeight + 100 && rect.bottom > -100 && vid.paused) {
-          vid.muted = true;
-          vid.defaultMuted = true;
-          vid.play().catch(() => {});
-        }
-      });
-    };
-
-    window.addEventListener('touchstart', handleUserInteraction, { passive: true });
-    window.addEventListener('click', handleUserInteraction, { passive: true });
-
     return () => {
       observer.disconnect();
-      window.removeEventListener('touchstart', handleUserInteraction);
-      window.removeEventListener('click', handleUserInteraction);
     };
   }, []);
 
   useEffect(() => {
-    if (isModalOpen) {
+    if (isModalOpen || isImageModalOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
@@ -252,7 +238,18 @@ export default function App() {
     return () => {
       document.body.style.overflow = '';
     };
-  }, [isModalOpen]);
+  }, [isModalOpen, isImageModalOpen]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsModalOpen(false);
+        setIsImageModalOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   const toggleFaq = (index: number) => {
     setActiveFaq((prev) => (prev === index ? null : index));
@@ -510,22 +507,22 @@ export default function App() {
           <h2 className="text-center">Mirá la calidad de los videos</h2>
           <div className="grid-3">
             <div className="preview-card">
-              <video autoPlay muted loop playsInline preload="none" poster="/videos/poster1.jpg" src="/videos/preview1.mp4" />
+              <video autoPlay muted loop playsInline preload="metadata" poster="/videos/poster1.jpg" src="/videos/preview1.mp4" />
             </div>
             <div className="preview-card">
-              <video autoPlay muted loop playsInline preload="none" poster="/videos/poster2.jpg" src="/videos/preview2.mp4" />
+              <video autoPlay muted loop playsInline preload="metadata" poster="/videos/poster2.jpg" src="/videos/preview2.mp4" />
             </div>
             <div className="preview-card">
-              <video autoPlay muted loop playsInline preload="none" poster="/videos/poster3.jpg" src="/videos/preview3.mp4" />
+              <video autoPlay muted loop playsInline preload="metadata" poster="/videos/poster3.jpg" src="/videos/preview3.mp4" />
             </div>
             <div className="preview-card">
-              <video autoPlay muted loop playsInline preload="none" poster="/videos/poster4.jpg" src="/videos/preview4.mp4" />
+              <video autoPlay muted loop playsInline preload="metadata" poster="/videos/poster4.jpg" src="/videos/preview4.mp4" />
             </div>
             <div className="preview-card">
-              <video autoPlay muted loop playsInline preload="none" poster="/videos/poster5.jpg" src="/videos/preview5.mp4" />
+              <video autoPlay muted loop playsInline preload="metadata" poster="/videos/poster5.jpg" src="/videos/preview5.mp4" />
             </div>
             <div className="preview-card">
-              <video autoPlay muted loop playsInline preload="none" poster="/videos/poster6.jpg" src="/videos/preview6.mp4" />
+              <video autoPlay muted loop playsInline preload="metadata" poster="/videos/poster6.jpg" src="/videos/preview6.mp4" />
             </div>
           </div>
           <div className="text-center" style={{ marginTop: '40px' }}>
@@ -699,18 +696,33 @@ export default function App() {
       {/* Checkout / Pricing Section */}
       <section id="checkout" className="price-section">
         <div className="container fade-in">
-          {/* Testimonio Real WhatsApp */}
+          {/* Testimonio Real WhatsApp (Clickeable con modal de zoom) */}
           <div className="max-w-md mx-auto mb-10 text-center">
             <p className="text-white font-bold text-base sm:text-lg mb-3 tracking-tight">
               Esta persona es menos inteligente que tú y logra esto en menos de 10 minutos al día:
             </p>
-            <div className="relative rounded-2xl overflow-hidden border border-emerald-500/30 shadow-[0_0_30px_rgba(16,185,129,0.15)] bg-[#0d1117] p-1.5 transition-transform duration-300 hover:scale-[1.01]">
+            <div
+              onClick={() => setIsImageModalOpen(true)}
+              className="relative rounded-2xl overflow-hidden border border-emerald-500/40 shadow-[0_0_30px_rgba(16,185,129,0.2)] bg-[#0d1117] p-1.5 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer group"
+              role="button"
+              tabIndex={0}
+              aria-label="Abrir imagen en tamaño completo"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  setIsImageModalOpen(true);
+                }
+              }}
+            >
               <img
                 src="/assets/aistudio/IMG_8802_f8004541.jpg"
-                alt="Testimonio de cliente generando ingresos con videos virales"
-                className="w-full h-auto rounded-xl object-contain shadow-md"
+                alt="Testimonio de cliente generando ingresos con videos virales (Toca para ampliar)"
+                className="w-full h-auto rounded-xl object-contain shadow-md transition-opacity group-hover:opacity-95"
                 loading="lazy"
               />
+              <div className="absolute bottom-3.5 right-3.5 bg-black/80 backdrop-blur-md border border-emerald-400/50 text-emerald-300 text-xs font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 transition-transform group-hover:scale-105">
+                <span>🔍</span> Haz clic para ampliar
+              </div>
             </div>
           </div>
 
@@ -1059,6 +1071,40 @@ export default function App() {
             >
               No gracias, prefiero llevar solo 1 producto por $5.90 →
             </a>
+          </div>
+        </div>
+      )}
+
+      {/* Lightbox / Zoom Modal para la foto de WhatsApp */}
+      {isImageModalOpen && (
+        <div
+          className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-6 bg-black/92 backdrop-blur-md animate-fadeIn"
+          role="dialog"
+          aria-modal="true"
+          onClick={() => setIsImageModalOpen(false)}
+        >
+          <div
+            className="relative max-w-md w-full max-h-[94vh] flex flex-col items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => setIsImageModalOpen(false)}
+              className="absolute -top-11 right-0 w-9 h-9 rounded-full bg-white/20 hover:bg-white/35 text-white flex items-center justify-center text-lg font-bold cursor-pointer transition-colors shadow-lg"
+              aria-label="Cerrar imagen"
+            >
+              ✕
+            </button>
+            <div className="relative overflow-hidden rounded-2xl border border-white/20 shadow-2xl bg-black max-h-[86vh] overflow-y-auto">
+              <img
+                src="/assets/aistudio/IMG_8802_f8004541.jpg"
+                alt="Conversación de WhatsApp ampliada"
+                className="w-full h-auto object-contain select-none"
+              />
+            </div>
+            <p className="text-gray-400 text-xs mt-2.5 flex items-center gap-1.5 font-medium">
+              <span>✕</span> Toca afuera o presiona la cruz para cerrar
+            </p>
           </div>
         </div>
       )}
