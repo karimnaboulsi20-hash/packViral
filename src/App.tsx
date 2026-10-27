@@ -312,14 +312,14 @@ export default function App() {
 
           <div className="mockup mockup-carousel">
             <div className="carousel-track">
-              <video src="/videos/preview1.mp4" poster="/videos/poster1.jpg" autoPlay muted loop playsInline preload="auto" />
-              <video src="/videos/preview2.mp4" poster="/videos/poster2.jpg" autoPlay muted loop playsInline preload="auto" />
-              <video src="/videos/preview3.mp4" poster="/videos/poster3.jpg" autoPlay muted loop playsInline preload="auto" />
-              <video src="/videos/preview4.mp4" poster="/videos/poster4.jpg" autoPlay muted loop playsInline preload="auto" />
-              <video src="/videos/preview1.mp4" poster="/videos/poster1.jpg" autoPlay muted loop playsInline preload="auto" />
-              <video src="/videos/preview2.mp4" poster="/videos/poster2.jpg" autoPlay muted loop playsInline preload="auto" />
-              <video src="/videos/preview3.mp4" poster="/videos/poster3.jpg" autoPlay muted loop playsInline preload="auto" />
-              <video src="/videos/preview4.mp4" poster="/videos/poster4.jpg" autoPlay muted loop playsInline preload="auto" />
+              <video src="/videos/preview1.mp4" poster="/videos/poster1.jpg" autoPlay muted loop playsInline preload="metadata" />
+              <video src="/videos/preview2.mp4" poster="/videos/poster2.jpg" autoPlay muted loop playsInline preload="metadata" />
+              <video src="/videos/preview3.mp4" poster="/videos/poster3.jpg" autoPlay muted loop playsInline preload="metadata" />
+              <video src="/videos/preview4.mp4" poster="/videos/poster4.jpg" autoPlay muted loop playsInline preload="metadata" />
+              <video src="/videos/preview1.mp4" poster="/videos/poster1.jpg" autoPlay muted loop playsInline preload="metadata" />
+              <video src="/videos/preview2.mp4" poster="/videos/poster2.jpg" autoPlay muted loop playsInline preload="metadata" />
+              <video src="/videos/preview3.mp4" poster="/videos/poster3.jpg" autoPlay muted loop playsInline preload="metadata" />
+              <video src="/videos/preview4.mp4" poster="/videos/poster4.jpg" autoPlay muted loop playsInline preload="metadata" />
             </div>
           </div>
         </div>
@@ -331,11 +331,15 @@ export default function App() {
           <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-14 max-w-6xl mx-auto">
             <div className="w-full lg:w-1/2">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 group">
-                <img
-                  src="/imgs/como_ganar_dinero.jpg"
-                  alt="Resultados de monetización con videos virales"
-                  className="w-full h-auto object-cover rounded-2xl transition-transform duration-500 group-hover:scale-105"
-                />
+                <picture>
+                  <source type="image/webp" srcSet="/imgs/como_ganar_dinero.webp" />
+                  <img
+                    src="/imgs/como_ganar_dinero.jpg"
+                    alt="Resultados de monetización con videos virales"
+                    className="w-full h-auto object-cover rounded-2xl transition-transform duration-500 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                </picture>
               </div>
             </div>
 
@@ -506,22 +510,22 @@ export default function App() {
           <h2 className="text-center">Mirá la calidad de los videos</h2>
           <div className="grid-3">
             <div className="preview-card">
-              <video autoPlay muted loop playsInline preload="auto" poster="/videos/poster1.jpg" src="/videos/preview1.mp4" />
+              <video autoPlay muted loop playsInline preload="none" poster="/videos/poster1.jpg" src="/videos/preview1.mp4" />
             </div>
             <div className="preview-card">
-              <video autoPlay muted loop playsInline preload="auto" poster="/videos/poster2.jpg" src="/videos/preview2.mp4" />
+              <video autoPlay muted loop playsInline preload="none" poster="/videos/poster2.jpg" src="/videos/preview2.mp4" />
             </div>
             <div className="preview-card">
-              <video autoPlay muted loop playsInline preload="auto" poster="/videos/poster3.jpg" src="/videos/preview3.mp4" />
+              <video autoPlay muted loop playsInline preload="none" poster="/videos/poster3.jpg" src="/videos/preview3.mp4" />
             </div>
             <div className="preview-card">
-              <video autoPlay muted loop playsInline preload="auto" poster="/videos/poster4.jpg" src="/videos/preview4.mp4" />
+              <video autoPlay muted loop playsInline preload="none" poster="/videos/poster4.jpg" src="/videos/preview4.mp4" />
             </div>
             <div className="preview-card">
-              <video autoPlay muted loop playsInline preload="auto" poster="/videos/poster5.jpg" src="/videos/preview5.mp4" />
+              <video autoPlay muted loop playsInline preload="none" poster="/videos/poster5.jpg" src="/videos/preview5.mp4" />
             </div>
             <div className="preview-card">
-              <video autoPlay muted loop playsInline preload="auto" poster="/videos/poster6.jpg" src="/videos/preview6.mp4" />
+              <video autoPlay muted loop playsInline preload="none" poster="/videos/poster6.jpg" src="/videos/preview6.mp4" />
             </div>
           </div>
           <div className="text-center" style={{ marginTop: '40px' }}>
@@ -713,8 +717,9 @@ export default function App() {
           <h2 className="text-center">Aprovechá esta oferta antes de que suba el precio</h2>
           <div className="price-card">
             <picture>
+              <source type="image/webp" srcSet="/imgs/mockup_preco.webp" />
               <source type="image/png" srcSet="/imgs/mockup_preco.png" />
-              <img src="/imgs/mockup_preco.jpg" alt="Viral Pack Pro Mockup" className="price-card-img" />
+              <img src="/imgs/mockup_preco.jpg" alt="Viral Pack Pro Mockup" className="price-card-img" loading="lazy" />
             </picture>
 
             <ul className="checklist">
@@ -961,50 +966,64 @@ export default function App() {
           onClick={() => setIsModalOpen(false)}
         >
           <div
-            className="relative w-full max-w-md bg-[#121318] border-2 border-[#CCFF00] rounded-2xl p-6 shadow-[0_0_50px_rgba(204,255,0,0.3)] text-white text-center"
+            className="relative w-full max-w-md max-h-[92vh] overflow-y-auto bg-[#121318] border-2 border-[#CCFF00] rounded-2xl p-5 sm:p-6 shadow-[0_0_50px_rgba(204,255,0,0.3)] text-white text-center"
             onClick={(e) => e.stopPropagation()}
           >
             <button
               type="button"
               onClick={() => setIsModalOpen(false)}
-              className="absolute top-3.5 right-3.5 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white flex items-center justify-center text-lg font-bold transition-colors cursor-pointer"
+              className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white flex items-center justify-center text-lg font-bold transition-colors cursor-pointer"
               aria-label="Cerrar ventana"
             >
               ✕
             </button>
-            <div className="inline-block bg-[#CCFF00]/15 border border-[#CCFF00]/40 text-[#CCFF00] text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-3">
+
+            {/* Imagem do Produto no Pop-up (Otimizada e Compacta) */}
+            <div className="flex justify-center mb-2.5">
+              <img
+                src="/assets/aistudio/combo_modal_thumb.webp"
+                alt="Combo Pack Completo"
+                className="w-32 sm:w-40 h-auto object-contain rounded-xl shadow-[0_4px_25px_rgba(204,255,0,0.25)] border border-[#CCFF00]/40"
+              />
+            </div>
+
+            <div className="inline-block bg-[#CCFF00]/15 border border-[#CCFF00]/40 text-[#CCFF00] text-[11px] sm:text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-2">
               ⚡ OFERTA ESPECIAL EXCLUSIVA
             </div>
-            <h3 className="text-xl sm:text-2xl font-black text-white leading-snug mb-3">
-              ¡Lleva este producto + <span className="text-[#CCFF00]">2 PRODUCTOS MÁS</span> por solo{' '}
-              <span className="text-[#CCFF00]">$10</span>!
+            <h3 className="text-xl sm:text-2xl font-black text-white leading-tight mb-1.5">
+              ¡Lleva el <span className="text-[#CCFF00]">COMBO COMPLETO</span> por solo <span className="text-[#CCFF00]">$10 USD</span>!
             </h3>
+            <p className="text-xs sm:text-sm text-gray-300 font-medium mb-3">
+              Desbloquea los 3 productos juntos con acceso de por vida:
+            </p>
 
-            <div className="bg-[#1A1C24] border border-white/10 rounded-xl p-4 my-4 text-left space-y-2.5 text-sm text-gray-200">
-              <div className="flex items-center gap-2">
-                <span className="text-[#CCFF00] font-bold">✓</span>
-                <span>
-                  <strong className="text-white">Viral Pack Pro</strong> (+250.000 videos virales)
+            <div className="bg-[#1A1C24] border border-white/10 rounded-xl p-3.5 sm:p-4 mb-3.5 text-left space-y-2 text-xs sm:text-sm text-gray-200">
+              <div className="flex items-start gap-2.5">
+                <span className="text-[#CCFF00] font-black text-sm shrink-0 leading-none mt-0.5">✓</span>
+                <span className="leading-snug">
+                  <strong className="text-white">Viral Pack Pro:</strong> +250.000 videos virales sin marca de agua
                 </span>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-[#CCFF00] font-bold">✓</span>
-                <span>
-                  <strong className="text-white">Masterclass con IA</strong> (Canales sin rostro)
+              <div className="flex items-start gap-2.5">
+                <span className="text-[#CCFF00] font-black text-sm shrink-0 leading-none mt-0.5">✓</span>
+                <span className="leading-snug">
+                  <strong className="text-white">Masterclass con IA:</strong> Estrategia para canales sin rostro
                 </span>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-[#CCFF00] font-bold">✓</span>
-                <span>
-                  <strong className="text-white">+10.000 Plantillas Canva</strong> + Músicas VIP
+              <div className="flex items-start gap-2.5">
+                <span className="text-[#CCFF00] font-black text-sm shrink-0 leading-none mt-0.5">✓</span>
+                <span className="leading-snug">
+                  <strong className="text-white">+10.000 Plantillas Canva</strong> + Pack de Músicas y Audios VIP
                 </span>
               </div>
             </div>
 
-            <div className="flex items-baseline justify-center gap-2 mb-4">
-              <span className="text-gray-400 text-sm line-through">$97</span>
-              <span className="text-3xl font-black text-[#CCFF00]">$10 USD</span>
-              <span className="text-xs text-gray-400 font-medium">(los 3 juntos)</span>
+            <div className="flex items-center justify-center gap-2.5 mb-3.5">
+              <span className="text-gray-400 text-sm line-through">$97 USD</span>
+              <span className="text-2xl sm:text-3xl font-black text-[#CCFF00]">$10 USD</span>
+              <span className="text-[11px] sm:text-xs text-gray-200 font-semibold bg-white/10 px-2 py-0.5 rounded-full">
+                (Los 3 juntos)
+              </span>
             </div>
 
             <a
@@ -1019,9 +1038,9 @@ export default function App() {
                 });
                 setIsModalOpen(false);
               }}
-              className="block w-full py-4 px-6 rounded-xl font-black text-sm sm:text-base uppercase tracking-wide bg-[#CCFF00] hover:bg-[#bbf000] text-black shadow-lg shadow-[#CCFF00]/25 transition-all duration-200 text-center hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+              className="block w-full py-3.5 px-4 rounded-xl font-black text-sm sm:text-base uppercase tracking-wide bg-[#CCFF00] hover:bg-[#bbf000] text-black shadow-lg shadow-[#CCFF00]/25 transition-all duration-200 text-center hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
             >
-              LLEVAR LOS 3 PRODUCTOS POR $10
+              SÍ, QUIERO LOS 3 PRODUCTOS POR $10 USD
             </a>
 
             <a
@@ -1036,9 +1055,9 @@ export default function App() {
                 });
                 setIsModalOpen(false);
               }}
-              className="block mt-4 text-xs text-gray-400 hover:text-gray-200 underline transition-colors cursor-pointer"
+              className="block mt-3 text-xs sm:text-sm text-gray-400 hover:text-gray-200 underline transition-colors cursor-pointer py-1"
             >
-              No gracias, prefiero solo el de $5.90 →
+              No gracias, prefiero llevar solo 1 producto por $5.90 →
             </a>
           </div>
         </div>
