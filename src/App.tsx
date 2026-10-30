@@ -758,19 +758,33 @@ export default function App() {
               </li>
               <li>
                 <span className="text-neon">🎁</span>{' '}
-                <strong className="text-neon">BONUS:</strong> Guía de Horarios y Hashtags Virales
+                <span>
+                  <strong className="text-neon">BONUS:</strong> Guía de Horarios y Hashtags Virales 🎁
+                </span>
               </li>
               <li>
                 <span className="text-neon">🎁</span>{' '}
-                <strong className="text-neon">BONUS:</strong> Audios y Músicas Motivacionales
+                <span>
+                  <strong className="text-neon">BONUS:</strong> Audios y Músicas Motivacionales 🎁
+                </span>
               </li>
               <li>
                 <span className="text-neon">🎁</span>{' '}
-                <strong className="text-neon">BONUS:</strong> Monetización Oculta con IA
+                <span>
+                  <strong className="text-neon">BONUS:</strong> Monetización Oculta con IA 🎁
+                </span>
               </li>
               <li>
                 <span className="text-neon">🎁</span>{' '}
-                <strong className="text-neon">BONUS:</strong> Pack Profesional de Ediciones
+                <span>
+                  <strong className="text-neon">BONUS:</strong> Pack Profesional de Ediciones 🎁
+                </span>
+              </li>
+              <li>
+                <span className="text-neon">🎁</span>{' '}
+                <span>
+                  <strong className="text-neon">BONUS:</strong> Más de 250.000 videos brasileños (viralizar na gringa) 🎁
+                </span>
               </li>
             </ul>
 
