@@ -6,13 +6,11 @@
 import React, { useState, useEffect } from 'react';
 import { Clock, Globe, LockOpen, Sparkles, TrendingUp } from 'lucide-react';
 
-// Meta Pixel ID and Facebook Conversions API Token requested by user
-const PIXEL_ID = '3287072748349703';
-const ACCESS_TOKEN =
-  'EAAXhiY72ZBSoBSZCUCTVojduZBxNK6RTIvBpffPTmoH3BRWZBlrFNfmSkmCSt2c8atjoyulxs5wtNjpCWmVfkZALCH7kwBawMyByRnxlVKxYhdlkHKn7XTvWN2rThKmRO8nSL1ahVZBOipKqpdjCEBgJMHc9fC55fYZCAWNZAyiz47rGW1DLL1VM1M2gkMUvjAZDZD';
-
 const CHECKOUT_URL_STANDARD = 'https://pay.hotmart.com/W107986804C?checkoutMode=10';
 const CHECKOUT_URL_COMBO = 'https://pay.hotmart.com/Q107995569T?checkoutMode=10';
+
+const PIXEL_ID = '1909582240014767';
+const ACCESS_TOKEN = 'EAAXhiY72ZBSoBSZnoHEHHG6jXLT6nlqAfnP4do17gp1ka4UYFYtFQ4JDjGFDp4MZCoW1ZAkgHbhiWtSCH5kEx2DrIV31ZAcD0EVcraZBZCTsVN0CHRvRZCna7s9Q4FWz4LJ2eZBUlBZAHtjm8TWxlNBVaEsWtzENWZCcT1sRQmFjJXyDWZBzj1c9IAWK9h8G9ZALRwZDZD';
 
 function getCookie(name: string): string | null {
   if (typeof document === 'undefined') return null;
