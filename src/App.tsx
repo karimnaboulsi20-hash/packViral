@@ -290,7 +290,7 @@ export default function App() {
               </span>
             </div>
           </div>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.18] max-w-5xl mx-auto mb-8">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.18] max-w-5xl mx-auto mb-4">
             Imagina{' '}
             <span className="bg-gradient-to-r from-amber-200 via-amber-400 to-yellow-500 bg-clip-text text-transparent">
               ganar dinero desde tu casa
@@ -300,10 +300,15 @@ export default function App() {
               sin mostrar tu rostro
             </span>
             .
-            <span className="block mt-4 text-xl sm:text-2xl md:text-3xl font-semibold text-gray-300 tracking-normal leading-snug">
-              Quédate aquí y aprende cómo hacerlo, te enseño todo justo abajo ⤵️
-            </span>
           </h1>
+          <div className="mb-6">
+            <span className="inline-block font-black text-xl sm:text-2xl md:text-3xl bg-gradient-to-r from-red-500 via-rose-400 to-amber-400 bg-clip-text text-transparent tracking-tight font-heading drop-shadow-[0_0_25px_rgba(239,68,68,0.5)] uppercase">
+              (De $5.000 a $30.000 al mes)
+            </span>
+          </div>
+          <p className="text-xl sm:text-2xl md:text-3xl font-semibold text-gray-300 tracking-normal leading-snug max-w-4xl mx-auto mb-8">
+            Quédate aquí y aprende cómo hacerlo, te enseño todo justo abajo ⤵️
+          </p>
 
           <div className="mockup mockup-carousel">
             <div className="carousel-track">
@@ -749,7 +754,7 @@ export default function App() {
                 <span className="text-neon">✅</span> Acceso instantáneo
               </li>
               <li>
-                <span className="text-neon">✅</span> Garantía de satisfacción de 7 días
+                <span className="text-neon">✅</span> Garantía de satisfacción doble de 30 días
               </li>
               <li>
                 <span className="text-neon">✅</span> Actualizaciones futuras gratis
@@ -795,6 +800,12 @@ export default function App() {
               <a href={CHECKOUT_URL_COMBO} onClick={handleOpenUpsellModal} className="btn btn-green cursor-pointer">
                 COMPRAR AHORA CON DESCUENTO
               </a>
+
+              {/* Desafío de garantía adicional */}
+              <div className="mt-4 p-3.5 rounded-xl bg-emerald-950/40 border border-emerald-500/40 text-emerald-300 text-xs sm:text-sm font-medium leading-relaxed text-center">
+                🛡️ Si publicas durante 15 días y no obtienes resultados, envíanos pruebas y te devolvemos el 100% de tu dinero más <span className="text-[#CCFF00] font-bold">$50 dólares</span> extra.
+              </div>
+
               <div className="scarcity-box">
                 ⏳ <strong className="text-alert">¡ATENCIÓN!</strong> La oferta promocional finaliza hoy:{' '}
                 <span id="dynamic-date" className="text-alert-date">
@@ -815,13 +826,12 @@ export default function App() {
       <section>
         <div className="container fade-in">
           <div className="guarantee-card">
-            <img src="/imgs/garantia.jpeg" alt="Garantía de Satisfacción" className="guarantee-img" />
             <h2 className="guarantee-title">Tu compra está 100% protegida</h2>
             <p className="guarantee-text">
-              Si por cualquier motivo no estás satisfecho con el Viral Pack Pro, tenés 7 días para pedir la devolución completa de tu dinero. Sin preguntas, sin complicaciones, sin letra chica. O te encanta o te devolvemos cada centavo.
+              Si por cualquier motivo no estás satisfecho con el Viral Pack Pro, tenés 30 días para pedir la devolución completa de tu dinero. Sin preguntas, sin complicaciones, sin letra chica. O te encanta o te devolvemos cada centavo.
             </p>
             <p className="guarantee-subtext">
-              Garantía válida por 7 días después de la compra — procesada directamente por Hotmart.
+              Garantía válida por 30 días después de la compra — procesada directamente por Hotmart.
             </p>
           </div>
         </div>
