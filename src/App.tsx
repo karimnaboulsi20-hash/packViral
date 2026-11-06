@@ -10,7 +10,8 @@ const CHECKOUT_URL_STANDARD = 'https://pay.hotmart.com/W107986804C?checkoutMode=
 const CHECKOUT_URL_COMBO = 'https://pay.hotmart.com/Q107995569T?checkoutMode=10';
 
 const PIXEL_ID = '1909582240014767';
-const ACCESS_TOKEN = 'EAAXhiY72ZBSoBSZnoHEHHG6jXLT6nlqAfnP4do17gp1ka4UYFYtFQ4JDjGFDp4MZCoW1ZAkgHbhiWtSCH5kEx2DrIV31ZAcD0EVcraZBZCTsVN0CHRvRZCna7s9Q4FWz4LJ2eZBUlBZAHtjm8TWxlNBVaEsWtzENWZCcT1sRQmFjJXyDWZBzj1c9IAWK9h8G9ZALRwZDZD';
+const ACCESS_TOKEN =
+  'EAAXhiY72ZBSoBSznoHEHHG6jXLT6nlqAfnP4do17gp1ka4UYFYtFQ4JDjGFDp4MZCoW1ZAkgHbhiWtSCH5kEx2DrIV31ZAcD0EVcraZBZCTsVN0CHRvRZCna7s9Q4FWz4LJ2eZBUlBZAHtjm8TWxlNBVaEsWtzENWZCcT1sRQmFjJXyDWZBzj1c9IAWK9h8G9ZALRwZDZD';
 
 function getCookie(name: string): string | null {
   if (typeof document === 'undefined') return null;
@@ -269,6 +270,11 @@ export default function App() {
 
   const handleOpenUpsellModal = (e: React.MouseEvent) => {
     e.preventDefault();
+    trackEvent('InitiateCheckout', {
+      content_name: 'Viral Pack Pro - Oferta Checkout',
+      value: 5.9,
+      currency: 'USD',
+    });
     setIsModalOpen(true);
   };
 
@@ -355,7 +361,7 @@ export default function App() {
 
           <div className="text-center mt-8 mb-4">
             <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-amber-300 tracking-tight">
-              Más de 50 nichos organizados para empezar a ganar dinero esta semana
+              Más de 50 nichos organizados para empezar a ganar dinero aún esta semana
             </h3>
           </div>
         </div>
@@ -418,8 +424,16 @@ export default function App() {
                 </div>
               </div>
 
+              {/* Frase encima del print de ChatGPT */}
+              <div className="mt-6 mb-3 text-left">
+                <p className="text-white font-extrabold text-base sm:text-lg tracking-tight leading-snug">
+                  La mayor prueba de que esto es real:{' '}
+                  <span className="text-emerald-400">¡la mayor inteligencia artificial del mundo no miente!</span>
+                </p>
+              </div>
+
               {/* Verified Proof / ChatGPT Card */}
-              <div className="mt-4 rounded-2xl bg-[#14151B] border border-white/10 shadow-2xl overflow-hidden">
+              <div className="rounded-2xl bg-[#14151B] border border-white/10 shadow-2xl overflow-hidden">
                 <div className="bg-[#1C1E26] px-4 py-3 border-b border-white/10 flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
                     <div className="w-7 h-7 rounded-full bg-[#10A37F] flex items-center justify-center text-white p-1">
