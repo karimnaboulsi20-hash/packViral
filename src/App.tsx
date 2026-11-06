@@ -5,6 +5,48 @@
 
 import React, { useState, useEffect } from 'react';
 import { Clock, Globe, LockOpen, Sparkles, TrendingUp } from 'lucide-react';
+import confetti from 'canvas-confetti';
+
+function triggerCelebration() {
+  if (typeof window === 'undefined') return;
+
+  // Explosive blast of confetti party poppers from the center
+  confetti({
+    particleCount: 110,
+    spread: 100,
+    origin: { y: 0.52 },
+    zIndex: 99999999,
+    colors: ['#CCFF00', '#FFD700', '#FF0055', '#00FFFF', '#FF9900', '#FFFFFF', '#A855F7'],
+  });
+
+  // Rapid celebratory fireworks cannons from both sides
+  const duration = 3.2 * 1000;
+  const animationEnd = Date.now() + duration;
+
+  const frame = () => {
+    confetti({
+      particleCount: 5,
+      angle: 60,
+      spread: 60,
+      origin: { x: 0, y: 0.65 },
+      zIndex: 99999999,
+      colors: ['#CCFF00', '#FFD700', '#FF0055', '#00FFFF', '#FFFFFF'],
+    });
+    confetti({
+      particleCount: 5,
+      angle: 120,
+      spread: 60,
+      origin: { x: 1, y: 0.65 },
+      zIndex: 99999999,
+      colors: ['#CCFF00', '#FFD700', '#FF0055', '#00FFFF', '#FFFFFF'],
+    });
+
+    if (Date.now() < animationEnd) {
+      requestAnimationFrame(frame);
+    }
+  };
+  frame();
+}
 
 const CHECKOUT_URL_STANDARD = 'https://pay.hotmart.com/W107986804C?checkoutMode=10';
 const CHECKOUT_URL_COMBO = 'https://pay.hotmart.com/Q107995569T?checkoutMode=10';
@@ -122,8 +164,32 @@ const BUYER_LOCATIONS = [
   'Guatemala', 'Costa Rica',
 ];
 
+const WHEEL_SLICES = [
+  { label: '90%', bg: '#CCFF00', color: '#000000', isWinner: true },
+  { label: '0%', bg: '#374151', color: '#9CA3AF' },
+  { label: '50%', bg: '#2563EB', color: '#FFFFFF' },
+  { label: '0%', bg: '#374151', color: '#9CA3AF' },
+  { label: '90%', bg: '#CCFF00', color: '#000000' },
+  { label: '20%', bg: '#EA580C', color: '#FFFFFF' },
+  { label: '0%', bg: '#374151', color: '#9CA3AF' },
+  { label: '70%', bg: '#7C3AED', color: '#FFFFFF' },
+];
+
+function polarToCartesian(centerX: number, centerY: number, radius: number, angleInDegrees: number) {
+  const angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180.0;
+  return {
+    x: centerX + radius * Math.cos(angleInRadians),
+    y: centerY + radius * Math.sin(angleInRadians),
+  };
+}
+
 export default function App() {
-  const [showIntroModal, setShowIntroModal] = useState(true);
+  const [showWheelModal, setShowWheelModal] = useState(true);
+  const [showIntroModal, setShowIntroModal] = useState(false);
+  const [isSpinning, setIsSpinning] = useState(false);
+  const [hasWon, setHasWon] = useState(false);
+  const [wheelRotation, setWheelRotation] = useState(0);
+
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [currentDate, setCurrentDate] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -230,7 +296,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (isModalOpen || isImageModalOpen) {
+    if (isModalOpen || isImageModalOpen || showWheelModal || showIntroModal) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
@@ -238,7 +304,28 @@ export default function App() {
     return () => {
       document.body.style.overflow = '';
     };
-  }, [isModalOpen, isImageModalOpen]);
+  }, [isModalOpen, isImageModalOpen, showWheelModal, showIntroModal]);
+
+  const handleSpinWheel = () => {
+    if (isSpinning || hasWon) return;
+    setIsSpinning(true);
+
+    // 8 full turns (2880 deg) with suspense slowdown to stop dead-center in 90% slice
+    const jitter = Math.floor(Math.random() * 5) - 2;
+    const targetRotation = 2880 + jitter;
+    setWheelRotation(targetRotation);
+
+    setTimeout(() => {
+      setIsSpinning(false);
+      setHasWon(true);
+      triggerCelebration();
+      trackEvent('ViewContent', {
+        content_name: 'Viral Pack Pro - Ruleta 90% Descuento Ganado',
+        value: 5.9,
+        currency: 'USD',
+      });
+    }, 5600);
+  };
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -280,6 +367,158 @@ export default function App() {
 
   return (
     <>
+      {/* Discount Wheel Modal (Before First Question) */}
+      {showWheelModal && (
+        <div className="fixed inset-0 z-[999999] flex items-center justify-center p-3 sm:p-4 bg-black/95 backdrop-blur-md animate-fadeIn overflow-y-auto">
+          <div className="relative w-full max-w-sm sm:max-w-md bg-[#121318] border-2 border-[#CCFF00]/50 rounded-3xl p-5 sm:p-6 shadow-[0_0_60px_rgba(204,255,0,0.25)] text-white text-center my-auto">
+            {/* Header requested: Garanta seu desconto, boa sorte */}
+            <div className="inline-block bg-[#CCFF00]/15 border border-[#CCFF00]/40 text-[#CCFF00] text-[11px] font-bold px-3 py-0.5 rounded-full uppercase tracking-wider mb-2">
+              🎰 RULETA DE DESCUENTO
+            </div>
+            <h2 className="text-xl sm:text-2xl font-heading font-black text-white leading-tight mb-1">
+              ¡Garantiza tu descuento, buena suerte!
+            </h2>
+            <p className="text-xs sm:text-sm text-gray-300 font-medium mb-3">
+              Gira la ruleta y descubre tu porcentaje de descuento exclusivo:
+            </p>
+
+            {/* Wheel Container */}
+            <div
+              onClick={handleSpinWheel}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  handleSpinWheel();
+                }
+              }}
+              className={`relative w-64 h-64 sm:w-72 sm:h-72 mx-auto my-2 flex items-center justify-center select-none group transition-transform ${
+                !isSpinning && !hasWon ? 'cursor-pointer hover:scale-[1.02]' : ''
+              }`}
+              title="Toca para girar la ruleta"
+            >
+              {/* Pointer Needle at Top */}
+              <div
+                className={`absolute -top-3.5 left-1/2 -translate-x-1/2 z-30 pointer-events-none drop-shadow-[0_4px_10px_rgba(204,255,0,0.8)] transition-transform ${
+                  isSpinning ? 'animate-bounce' : ''
+                }`}
+              >
+                <div className="w-0 h-0 border-l-[13px] border-l-transparent border-r-[13px] border-r-transparent border-t-[26px] border-t-[#CCFF00] filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" />
+              </div>
+
+              {/* Glowing Outer Casino Ring */}
+              <div className="absolute inset-0 rounded-full border-4 border-[#262A36] shadow-[0_0_30px_rgba(204,255,0,0.15)] pointer-events-none z-10 group-hover:border-[#CCFF00]/60 transition-colors" />
+
+              {/* The Spinning Wheel */}
+              <svg
+                viewBox="0 0 300 300"
+                className="w-full h-full transform-gpu"
+                style={{
+                  transform: `rotate(${wheelRotation}deg)`,
+                  transition: isSpinning
+                    ? 'transform 5.5s cubic-bezier(0.06, 0.88, 0.12, 1)'
+                    : 'none',
+                }}
+              >
+                {/* Outer Ring with Casino Dots */}
+                <circle cx="150" cy="150" r="148" fill="#181A22" stroke="#CCFF00" strokeWidth="3" />
+                <circle cx="150" cy="150" r="142" fill="none" stroke="#FFFFFF" strokeWidth="3" strokeDasharray="4 16" opacity="0.6" />
+
+                {/* Slices */}
+                {WHEEL_SLICES.map((slice, i) => {
+                  const startAngle = i * 45 - 22.5;
+                  const endAngle = i * 45 + 22.5;
+                  const p1 = polarToCartesian(150, 150, 135, startAngle);
+                  const p2 = polarToCartesian(150, 150, 135, endAngle);
+                  const d = `M 150 150 L ${p1.x.toFixed(2)} ${p1.y.toFixed(2)} A 135 135 0 0 1 ${p2.x.toFixed(2)} ${p2.y.toFixed(2)} Z`;
+                  const midAngle = i * 45;
+
+                  return (
+                    <g key={i}>
+                      <path d={d} fill={slice.bg} stroke="#181A22" strokeWidth="2" />
+                      <text
+                        x="150"
+                        y="52"
+                        transform={`rotate(${midAngle}, 150, 150)`}
+                        textAnchor="middle"
+                        dominantBaseline="central"
+                        fill={slice.color}
+                        fontSize={slice.isWinner ? '18' : '15'}
+                        fontWeight="900"
+                        fontFamily="Montserrat, sans-serif"
+                        letterSpacing="0.5px"
+                      >
+                        {slice.label}
+                      </text>
+                    </g>
+                  );
+                })}
+
+                {/* Center Hub */}
+                <circle cx="150" cy="150" r="28" fill="#121318" stroke="#CCFF00" strokeWidth="3" />
+                <circle cx="150" cy="150" r="18" fill="#CCFF00" />
+                <text
+                  x="150"
+                  y="151"
+                  textAnchor="middle"
+                  dominantBaseline="central"
+                  fill="#000000"
+                  fontSize="8"
+                  fontWeight="900"
+                  fontFamily="Montserrat, sans-serif"
+                  letterSpacing="0.5px"
+                >
+                  GIRAR
+                </text>
+              </svg>
+            </div>
+
+            {/* Spin CTA Button or Win Celebration */}
+            {!hasWon ? (
+              <div className="mt-3">
+                <button
+                  type="button"
+                  onClick={handleSpinWheel}
+                  disabled={isSpinning}
+                  className={`w-full py-3.5 sm:py-4 px-6 rounded-2xl font-black text-sm sm:text-base uppercase tracking-wider transition-all duration-200 cursor-pointer shadow-xl ${
+                    isSpinning
+                      ? 'bg-gray-700 text-gray-300 cursor-not-allowed opacity-80'
+                      : 'bg-[#CCFF00] hover:bg-[#bbf000] text-black shadow-[#CCFF00]/30 hover:scale-[1.02] active:scale-[0.98] animate-pulse'
+                  }`}
+                >
+                  {isSpinning ? '🎰 GIRANDO LA RULETA...' : '🎰 ¡TOCA PARA GIRAR!'}
+                </button>
+                <p className="text-[11px] text-gray-400 mt-2 font-medium">
+                  {isSpinning ? '¡La suerte está girando!' : '👆 Toca la ruleta o el botón para girar'}
+                </p>
+              </div>
+            ) : (
+              <div className="mt-3 p-4 rounded-2xl bg-[#181B14] border-2 border-[#CCFF00] text-center shadow-[0_0_35px_rgba(204,255,0,0.35)] animate-fadeIn">
+                <div className="inline-block bg-[#CCFF00] text-black text-[11px] font-black px-3 py-0.5 rounded-full uppercase tracking-wider mb-2">
+                  🎉 ¡DESCUENTO DESBLOQUEADO!
+                </div>
+                <h3 className="text-xl sm:text-2xl font-black text-white leading-tight mb-1.5">
+                  ¡GANASTE UN <span className="text-[#CCFF00]">90%</span> DE DESCUENTO!
+                </h3>
+                <p className="text-xs sm:text-sm text-gray-300 mb-4">
+                  Tu descuento del <strong className="text-white">90%</strong> fue aplicado con éxito para tu acceso.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowWheelModal(false);
+                    setShowIntroModal(true);
+                  }}
+                  className="w-full py-3.5 px-6 rounded-xl font-black text-sm sm:text-base uppercase tracking-wide bg-[#CCFF00] hover:bg-[#bbf000] text-black shadow-lg shadow-[#CCFF00]/30 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                >
+                  CONTINUAR →
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Question Modal Before Entering */}
       {showIntroModal && (
         <div className="fixed inset-0 z-[999999] flex items-center justify-center p-4 bg-black/95 backdrop-blur-md animate-fadeIn">
@@ -335,13 +574,16 @@ export default function App() {
               </span>
             </div>
           </div>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.18] max-w-5xl mx-auto mb-6">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.18] max-w-5xl mx-auto mb-3 sm:mb-4">
             Imagina ganar de <span className="inline-block bg-amber-400/15 border border-amber-400/50 text-amber-300 px-2 py-0.5 rounded-lg animate-pulse font-extrabold shadow-[0_0_20px_rgba(251,191,36,0.3)]">$5.000</span> a <span className="inline-block bg-amber-400/15 border border-amber-400/50 text-amber-300 px-2 py-0.5 rounded-lg animate-pulse font-extrabold shadow-[0_0_20px_rgba(251,191,36,0.3)]">$30.000</span> dólares por mes apenas postando video en la internet{' '}
             <span className="bg-gradient-to-r from-amber-200 via-amber-400 to-yellow-500 bg-clip-text text-transparent underline decoration-amber-400/50 underline-offset-8">
               sin mostrar su rostro
             </span>
             .
           </h1>
+          <p className="text-sm sm:text-base md:text-lg font-semibold text-amber-300/90 tracking-wide mb-6">
+            (Igual yo y más de 100.000 personas)
+          </p>
           <p className="text-xl sm:text-2xl md:text-3xl font-semibold text-gray-300 tracking-normal leading-snug max-w-4xl mx-auto mb-8">
             Quédate aquí y aprende cómo hacerlo, te enseño todo justo abajo ⤵️
           </p>
