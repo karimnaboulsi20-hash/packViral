@@ -6,6 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import { Clock, Globe, LockOpen, Sparkles, TrendingUp } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { playRouletteSpinSound, playWinnerSound, stopRouletteSounds } from './utils/rouletteAudio';
 
 function triggerCelebration() {
   if (typeof window === 'undefined') return;
@@ -309,6 +310,7 @@ export default function App() {
   const handleSpinWheel = () => {
     if (isSpinning || hasWon) return;
     setIsSpinning(true);
+    playRouletteSpinSound();
 
     // 8 full turns (2880 deg) with suspense slowdown to stop dead-center in 90% slice
     const jitter = Math.floor(Math.random() * 5) - 2;
@@ -318,6 +320,7 @@ export default function App() {
     setTimeout(() => {
       setIsSpinning(false);
       setHasWon(true);
+      playWinnerSound();
       triggerCelebration();
       trackEvent('ViewContent', {
         content_name: 'Viral Pack Pro - Ruleta 90% Descuento Ganado',
@@ -506,6 +509,7 @@ export default function App() {
                 <button
                   type="button"
                   onClick={() => {
+                    stopRouletteSounds();
                     setShowWheelModal(false);
                     setShowIntroModal(true);
                   }}
@@ -536,7 +540,7 @@ export default function App() {
                 onClick={() => setShowIntroModal(false)}
                 className="w-full text-left p-3.5 sm:p-4 rounded-xl bg-[#1A1C24] hover:bg-[#252833] border border-[#CCFF00]/40 hover:border-[#CCFF00] text-white font-medium text-xs sm:text-sm transition-all duration-200 flex items-center justify-between group cursor-pointer shadow-sm"
               >
-                <span>🚀 Quiero invertir un poco más y tener resultados 5x más rápido</span>
+                <span>🚀 Quiero tener resultados 5 veces más rápido</span>
                 <span className="text-[#CCFF00] text-base font-black group-hover:translate-x-1 transition-transform">→</span>
               </button>
 
@@ -545,7 +549,7 @@ export default function App() {
                 onClick={() => setShowIntroModal(false)}
                 className="w-full text-left p-3.5 sm:p-4 rounded-xl bg-[#1A1C24] hover:bg-[#252833] border border-white/10 hover:border-white/30 text-gray-300 font-normal text-xs sm:text-sm transition-all duration-200 flex items-center justify-between group cursor-pointer"
               >
-                <span>💡 Quiero invertir menos y tener resultados normales</span>
+                <span>💡 Quiero pagar menos y tener resultados normales</span>
                 <span className="text-gray-400 text-base font-black group-hover:translate-x-1 transition-transform">→</span>
               </button>
             </div>
@@ -575,11 +579,19 @@ export default function App() {
             </div>
           </div>
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.18] max-w-5xl mx-auto mb-3 sm:mb-4">
-            Imagina ganar de <span className="inline-block bg-amber-400/15 border border-amber-400/50 text-amber-300 px-2 py-0.5 rounded-lg animate-pulse font-extrabold shadow-[0_0_20px_rgba(251,191,36,0.3)]">$5.000</span> a <span className="inline-block bg-amber-400/15 border border-amber-400/50 text-amber-300 px-2 py-0.5 rounded-lg animate-pulse font-extrabold shadow-[0_0_20px_rgba(251,191,36,0.3)]">$30.000</span> dólares por mes apenas postando video en la internet{' '}
+            ¿Sabías que puedes ganar de{' '}
+            <span className="inline-block bg-amber-400/15 border border-amber-400/50 text-amber-300 px-2 py-0.5 rounded-lg animate-pulse font-extrabold shadow-[0_0_20px_rgba(251,191,36,0.3)]">
+              $5.000
+            </span>{' '}
+            a{' '}
+            <span className="inline-block bg-amber-400/15 border border-amber-400/50 text-amber-300 px-2 py-0.5 rounded-lg animate-pulse font-extrabold shadow-[0_0_20px_rgba(251,191,36,0.3)]">
+              $30.000
+            </span>{' '}
+            dólares al mes simplemente publicando videos en internet,{' '}
             <span className="bg-gradient-to-r from-amber-200 via-amber-400 to-yellow-500 bg-clip-text text-transparent underline decoration-amber-400/50 underline-offset-8">
-              sin mostrar su rostro
+              sin mostrar tu rostro
             </span>
-            .
+            ?
           </h1>
           <p className="text-sm sm:text-base md:text-lg font-semibold text-amber-300/90 tracking-wide mb-6">
             (Igual yo y más de 100.000 personas)
