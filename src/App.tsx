@@ -122,6 +122,7 @@ const BUYER_LOCATIONS = [
 ];
 
 export default function App() {
+  const [showIntroModal, setShowIntroModal] = useState(true);
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [currentDate, setCurrentDate] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -273,6 +274,44 @@ export default function App() {
 
   return (
     <>
+      {/* Question Modal Before Entering */}
+      {showIntroModal && (
+        <div className="fixed inset-0 z-[999999] flex items-center justify-center p-4 bg-black/95 backdrop-blur-md animate-fadeIn">
+          <div className="relative w-full max-w-md bg-[#121318] border border-[#CCFF00]/40 rounded-2xl p-5 sm:p-6 shadow-[0_0_40px_rgba(204,255,0,0.2)] text-white text-center">
+            <div className="inline-block bg-[#CCFF00]/15 border border-[#CCFF00]/40 text-[#CCFF00] text-[11px] font-bold px-3 py-0.5 rounded-full uppercase tracking-wider mb-3">
+              ⚡ PREGUNTA RÁPIDA
+            </div>
+            <h2 className="text-sm sm:text-base font-body font-medium text-gray-200 leading-relaxed mb-5 max-w-sm mx-auto">
+              De acuerdo con tu realidad, <span className="text-amber-300 font-bold">¿cuál prefieres ahora?</span>
+            </h2>
+
+            <div className="space-y-3 mb-4">
+              <button
+                type="button"
+                onClick={() => setShowIntroModal(false)}
+                className="w-full text-left p-3.5 sm:p-4 rounded-xl bg-[#1A1C24] hover:bg-[#252833] border border-[#CCFF00]/40 hover:border-[#CCFF00] text-white font-medium text-xs sm:text-sm transition-all duration-200 flex items-center justify-between group cursor-pointer shadow-sm"
+              >
+                <span>🚀 Quiero invertir un poco más y tener resultados 5x más rápido</span>
+                <span className="text-[#CCFF00] text-base font-black group-hover:translate-x-1 transition-transform">→</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setShowIntroModal(false)}
+                className="w-full text-left p-3.5 sm:p-4 rounded-xl bg-[#1A1C24] hover:bg-[#252833] border border-white/10 hover:border-white/30 text-gray-300 font-normal text-xs sm:text-sm transition-all duration-200 flex items-center justify-between group cursor-pointer"
+              >
+                <span>💡 Quiero invertir menos y tener resultados normales</span>
+                <span className="text-gray-400 text-base font-black group-hover:translate-x-1 transition-transform">→</span>
+              </button>
+            </div>
+
+            <p className="text-[11px] text-gray-400 font-medium">
+              Selecciona una opción para continuar.
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Hero Section */}
       <section className="hero">
         <div className="container fade-in">
@@ -290,22 +329,13 @@ export default function App() {
               </span>
             </div>
           </div>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.18] max-w-5xl mx-auto mb-4">
-            Imagina{' '}
-            <span className="bg-gradient-to-r from-amber-200 via-amber-400 to-yellow-500 bg-clip-text text-transparent">
-              ganar dinero desde tu casa
-            </span>{' '}
-            solo subiendo videos{' '}
-            <span className="underline decoration-amber-400/50 underline-offset-8">
-              sin mostrar tu rostro
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.18] max-w-5xl mx-auto mb-6">
+            Imagina ganar de <span className="inline-block bg-amber-400/15 border border-amber-400/50 text-amber-300 px-2 py-0.5 rounded-lg animate-pulse font-extrabold shadow-[0_0_20px_rgba(251,191,36,0.3)]">$5.000</span> a <span className="inline-block bg-amber-400/15 border border-amber-400/50 text-amber-300 px-2 py-0.5 rounded-lg animate-pulse font-extrabold shadow-[0_0_20px_rgba(251,191,36,0.3)]">$30.000</span> dólares por mes apenas postando video en la internet{' '}
+            <span className="bg-gradient-to-r from-amber-200 via-amber-400 to-yellow-500 bg-clip-text text-transparent underline decoration-amber-400/50 underline-offset-8">
+              sin mostrar su rostro
             </span>
             .
           </h1>
-          <div className="mb-6">
-            <span className="inline-block font-black text-xl sm:text-2xl md:text-3xl bg-gradient-to-r from-red-500 via-rose-400 to-amber-400 bg-clip-text text-transparent tracking-tight font-heading drop-shadow-[0_0_25px_rgba(239,68,68,0.5)] uppercase">
-              (De $5.000 a $30.000 al mes)
-            </span>
-          </div>
           <p className="text-xl sm:text-2xl md:text-3xl font-semibold text-gray-300 tracking-normal leading-snug max-w-4xl mx-auto mb-8">
             Quédate aquí y aprende cómo hacerlo, te enseño todo justo abajo ⤵️
           </p>
@@ -321,6 +351,12 @@ export default function App() {
               <video src="/videos/preview3.mp4" poster="/videos/poster3.jpg" autoPlay muted loop playsInline preload="metadata" />
               <video src="/videos/preview4.mp4" poster="/videos/poster4.jpg" autoPlay muted loop playsInline preload="metadata" />
             </div>
+          </div>
+
+          <div className="text-center mt-8 mb-4">
+            <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-amber-300 tracking-tight">
+              Más de 50 nichos organizados para empezar a ganar dinero esta semana
+            </h3>
           </div>
         </div>
       </section>
