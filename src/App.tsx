@@ -260,16 +260,60 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    const videoElements = document.querySelectorAll('video');
-    videoElements.forEach((vid) => {
+    const setupVideo = (vid: HTMLVideoElement) => {
       vid.defaultMuted = true;
       vid.muted = true;
+      vid.playsInline = true;
       vid.setAttribute('muted', '');
       vid.setAttribute('playsinline', '');
       vid.setAttribute('webkit-playsinline', 'true');
-    });
+      vid.setAttribute('preload', 'auto');
 
-    // 300px margin enables video to be ready and playing BEFORE user scrolls to it
+      const handleEnded = () => {
+        vid.currentTime = 0;
+        const p = vid.play();
+        if (p !== undefined) p.catch(() => {});
+      };
+
+      vid.removeEventListener('ended', handleEnded);
+      vid.addEventListener('ended', handleEnded);
+
+      const playPromise = vid.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {});
+      }
+    };
+
+    const allVideos = document.querySelectorAll<HTMLVideoElement>('video');
+    allVideos.forEach(setupVideo);
+
+    // Global unlock handler for iOS Safari (user gestures immediately resume any paused videos)
+    const playAllVideos = () => {
+      document.querySelectorAll<HTMLVideoElement>('video').forEach((vid) => {
+        vid.muted = true;
+        vid.defaultMuted = true;
+        if (vid.paused) {
+          const p = vid.play();
+          if (p !== undefined) p.catch(() => {});
+        }
+      });
+    };
+
+    window.addEventListener('touchstart', playAllVideos, { passive: true });
+    window.addEventListener('touchend', playAllVideos, { passive: true });
+    window.addEventListener('scroll', playAllVideos, { passive: true });
+    window.addEventListener('click', playAllVideos, { passive: true });
+
+    const handleVisibility = () => {
+      if (!document.hidden) {
+        playAllVideos();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    // IntersectionObserver: ONLY observe grid preview videos, NEVER the carousel videos
+    // (carousel videos move continuously horizontally; pausing them breaks infinite loop on iOS)
+    const previewVideos = document.querySelectorAll<HTMLVideoElement>('.preview-card video');
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -281,17 +325,31 @@ export default function App() {
             if (playPromise !== undefined) {
               playPromise.catch(() => {});
             }
-          } else {
-            video.pause();
           }
         });
       },
-      { rootMargin: '300px 0px 300px 0px', threshold: 0.05 }
+      { rootMargin: '400px 0px 400px 0px', threshold: 0.01 }
     );
 
-    videoElements.forEach((vid) => observer.observe(vid));
+    previewVideos.forEach((vid) => observer.observe(vid));
+
+    // Watchdog timer to ensure carousel videos never stay frozen on iPhone
+    const watchdog = setInterval(() => {
+      document.querySelectorAll<HTMLVideoElement>('.carousel-track video').forEach((vid) => {
+        if (vid.paused) {
+          const p = vid.play();
+          if (p !== undefined) p.catch(() => {});
+        }
+      });
+    }, 2000);
 
     return () => {
+      window.removeEventListener('touchstart', playAllVideos);
+      window.removeEventListener('touchend', playAllVideos);
+      window.removeEventListener('scroll', playAllVideos);
+      window.removeEventListener('click', playAllVideos);
+      document.removeEventListener('visibilitychange', handleVisibility);
+      clearInterval(watchdog);
       observer.disconnect();
     };
   }, []);
@@ -602,14 +660,14 @@ export default function App() {
 
           <div className="mockup mockup-carousel">
             <div className="carousel-track">
-              <video src="/videos/preview1.mp4" poster="/videos/poster1.jpg" autoPlay muted loop playsInline preload="metadata" />
-              <video src="/videos/preview2.mp4" poster="/videos/poster2.jpg" autoPlay muted loop playsInline preload="metadata" />
-              <video src="/videos/preview3.mp4" poster="/videos/poster3.jpg" autoPlay muted loop playsInline preload="metadata" />
-              <video src="/videos/preview4.mp4" poster="/videos/poster4.jpg" autoPlay muted loop playsInline preload="metadata" />
-              <video src="/videos/preview1.mp4" poster="/videos/poster1.jpg" autoPlay muted loop playsInline preload="metadata" />
-              <video src="/videos/preview2.mp4" poster="/videos/poster2.jpg" autoPlay muted loop playsInline preload="metadata" />
-              <video src="/videos/preview3.mp4" poster="/videos/poster3.jpg" autoPlay muted loop playsInline preload="metadata" />
-              <video src="/videos/preview4.mp4" poster="/videos/poster4.jpg" autoPlay muted loop playsInline preload="metadata" />
+              <video src="/videos/preview1.mp4" poster="/videos/poster1.jpg" autoPlay muted loop playsInline preload="auto" disablePictureInPicture />
+              <video src="/videos/preview2.mp4" poster="/videos/poster2.jpg" autoPlay muted loop playsInline preload="auto" disablePictureInPicture />
+              <video src="/videos/preview3.mp4" poster="/videos/poster3.jpg" autoPlay muted loop playsInline preload="auto" disablePictureInPicture />
+              <video src="/videos/preview4.mp4" poster="/videos/poster4.jpg" autoPlay muted loop playsInline preload="auto" disablePictureInPicture />
+              <video src="/videos/preview1.mp4" poster="/videos/poster1.jpg" autoPlay muted loop playsInline preload="auto" disablePictureInPicture />
+              <video src="/videos/preview2.mp4" poster="/videos/poster2.jpg" autoPlay muted loop playsInline preload="auto" disablePictureInPicture />
+              <video src="/videos/preview3.mp4" poster="/videos/poster3.jpg" autoPlay muted loop playsInline preload="auto" disablePictureInPicture />
+              <video src="/videos/preview4.mp4" poster="/videos/poster4.jpg" autoPlay muted loop playsInline preload="auto" disablePictureInPicture />
             </div>
           </div>
 
@@ -818,22 +876,22 @@ export default function App() {
           <h2 className="text-center">Mirá la calidad de los videos</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
             <div className="preview-card !min-h-0">
-              <video autoPlay muted loop playsInline preload="metadata" poster="/videos/poster1.jpg" src="/videos/preview1.mp4" />
+              <video autoPlay muted loop playsInline preload="auto" disablePictureInPicture poster="/videos/poster1.jpg" src="/videos/preview1.mp4" />
             </div>
             <div className="preview-card !min-h-0">
-              <video autoPlay muted loop playsInline preload="metadata" poster="/videos/poster2.jpg" src="/videos/preview2.mp4" />
+              <video autoPlay muted loop playsInline preload="auto" disablePictureInPicture poster="/videos/poster2.jpg" src="/videos/preview2.mp4" />
             </div>
             <div className="preview-card !min-h-0">
-              <video autoPlay muted loop playsInline preload="metadata" poster="/videos/poster3.jpg" src="/videos/preview3.mp4" />
+              <video autoPlay muted loop playsInline preload="auto" disablePictureInPicture poster="/videos/poster3.jpg" src="/videos/preview3.mp4" />
             </div>
             <div className="preview-card !min-h-0">
-              <video autoPlay muted loop playsInline preload="metadata" poster="/videos/poster4.jpg" src="/videos/preview4.mp4" />
+              <video autoPlay muted loop playsInline preload="auto" disablePictureInPicture poster="/videos/poster4.jpg" src="/videos/preview4.mp4" />
             </div>
             <div className="preview-card !min-h-0">
-              <video autoPlay muted loop playsInline preload="metadata" poster="/videos/poster5.jpg" src="/videos/preview5.mp4" />
+              <video autoPlay muted loop playsInline preload="auto" disablePictureInPicture poster="/videos/poster5.jpg" src="/videos/preview5.mp4" />
             </div>
             <div className="preview-card !min-h-0">
-              <video autoPlay muted loop playsInline preload="metadata" poster="/videos/poster6.jpg" src="/videos/preview6.mp4" />
+              <video autoPlay muted loop playsInline preload="auto" disablePictureInPicture poster="/videos/poster6.jpg" src="/videos/preview6.mp4" />
             </div>
           </div>
           <div className="text-center" style={{ marginTop: '40px' }}>
