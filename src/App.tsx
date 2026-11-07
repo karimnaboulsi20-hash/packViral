@@ -640,49 +640,48 @@ export default function App() {
             </div>
 
             <div className="w-full lg:w-1/2 flex flex-col justify-center">
-              <span className="inline-block text-amber-300 text-xs sm:text-sm font-bold tracking-widest uppercase mb-3">
+              <span className="inline-block text-amber-300 text-xs sm:text-sm font-bold tracking-widest uppercase mb-2">
                 Así de simple funciona
               </span>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight leading-tight mb-5">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight leading-tight mb-4">
                 Cómo vas a{' '}
                 <span className="bg-gradient-to-r from-amber-200 via-amber-400 to-yellow-500 bg-clip-text text-transparent">
                   ganar dinero de verdad
                 </span>{' '}
                 solo subiendo estos videos
               </h2>
-              <p className="text-gray-300 text-base sm:text-lg leading-relaxed mb-4">
-                El secreto es muy simple: plataformas como TikTok, Instagram Reels, YouTube Shorts y Kwai necesitan que la gente pase horas viendo contenido. Cuando tú subes estos videos virales —que ya vienen con ganchos psicológicos y música magnética— el algoritmo se los muestra gratis a miles de personas.
-              </p>
-              <p className="text-gray-300 text-base sm:text-lg leading-relaxed mb-5">
-                En menos de 7 días, tus publicaciones empiezan a acumular miles de visualizaciones. Ahí es donde el dinero entra directo a tu cuenta:
+              <p className="text-gray-300 text-sm sm:text-base leading-relaxed mb-4">
+                Redes como <strong className="text-white">TikTok, Instagram y YouTube</strong> pagan por retención. Subes estos videos listos con ganchos virales y el algoritmo los muestra <strong className="text-amber-300">gratis a miles de personas</strong>.
               </p>
 
-              <div className="space-y-3.5 mb-6 text-sm sm:text-base text-gray-200">
-                <div className="flex items-start gap-3">
-                  <span className="text-xl leading-none mt-0.5">💰</span>
-                  <p>
-                    <strong className="text-white">Fondos de Creadores:</strong> Pagos mensuales en dólares directamente de TikTok y YouTube solo por las vistas que generan tus videos.
+              <div className="space-y-2.5 mb-5 text-xs sm:text-sm text-gray-200">
+                <div className="flex items-start gap-2.5 bg-white/[0.03] border border-white/5 rounded-xl p-3">
+                  <span className="text-lg leading-none mt-0.5">💰</span>
+                  <p className="m-0 leading-snug">
+                    <strong className="text-white">Fondos de Creadores:</strong> Pagos mensuales en dólares de TikTok y YouTube solo por las vistas de tus videos.
                   </p>
                 </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-xl leading-none mt-0.5">🔗</span>
-                  <p>
-                    <strong className="text-white">Ventas con Enlaces de Afiliado:</strong> Pones un link en tu biografía (de Hotmart, Amazon o ClickBank) y ganas comisiones automáticas cada vez que alguien compra.
+                <div className="flex items-start gap-2.5 bg-white/[0.03] border border-white/5 rounded-xl p-3">
+                  <span className="text-lg leading-none mt-0.5">🔗</span>
+                  <p className="m-0 leading-snug">
+                    <strong className="text-white">Ventas como Afiliado:</strong> Pones un link en tu biografía (Hotmart, Amazon) y ganas comisiones automáticas.
                   </p>
                 </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-xl leading-none mt-0.5">🎯</span>
-                  <p>
-                    <strong className="text-white">100% Desde Tu Teléfono:</strong> Sin tener que aparecer frente a la cámara, sin grabar nada y sin experiencia previa.
+                <div className="flex items-start gap-2.5 bg-white/[0.03] border border-white/5 rounded-xl p-3">
+                  <span className="text-lg leading-none mt-0.5">🎯</span>
+                  <p className="m-0 leading-snug">
+                    <strong className="text-white">100% Desde Tu Teléfono:</strong> Sin mostrar tu rostro, sin grabar nada y sin experiencia previa.
                   </p>
                 </div>
               </div>
 
               {/* Frase encima del print de ChatGPT */}
-              <div className="mt-6 mb-3 text-left">
-                <p className="text-white font-extrabold text-base sm:text-lg tracking-tight leading-snug">
+              <div className="mt-8 mb-4 text-left">
+                <p className="text-xl sm:text-2xl lg:text-3xl font-heading font-black text-white tracking-tight leading-snug">
                   La mayor prueba de que esto es real:{' '}
-                  <span className="text-emerald-400">¡la mayor inteligencia artificial del mundo no miente!</span>
+                  <span className="text-emerald-400 drop-shadow-[0_0_25px_rgba(52,211,153,0.35)]">
+                    ¡la mayor inteligencia artificial del mundo no miente!
+                  </span>
                 </p>
               </div>
 
@@ -722,16 +721,21 @@ export default function App() {
                         <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.5045 4.5045 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.6669zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813v6.7227zm1.1458-1.9776l2.5534-1.4727 2.5534 1.4727v2.9454l-2.5534 1.4727-2.5534-1.4727z" />
                       </svg>
                     </div>
-                    <div className="bg-[#1F212C] border border-white/5 rounded-2xl rounded-tl-sm px-5 py-4 text-gray-200 text-sm sm:text-base leading-relaxed space-y-3">
-                      <p>
-                        <strong className="text-white">Sí, es 100% real y totalmente comprobado.</strong> Actualmente, las cuentas temáticas sin rostro (<em className="text-amber-300">faceless</em>) representan uno de los modelos de negocio más rentables y escalables de internet.
+                    <div className="bg-[#1F212C] border border-white/5 rounded-2xl rounded-tl-sm p-4 text-gray-200 text-xs sm:text-sm leading-relaxed space-y-2">
+                      <p className="font-semibold text-white">
+                        ✅ <strong className="text-emerald-400">Sí, es 100% real y comprobado.</strong> Las cuentas temáticas sin rostro (<em className="text-amber-300">faceless</em>) son de los negocios más rentables en internet hoy.
                       </p>
-                      <p>
-                        Los algoritmos de TikTok, Instagram y YouTube <strong className="text-white">no evalúan quién eres ni tu identidad</strong>; únicamente miden la retención de audiencia. Al publicar videos que ya tienen ganchos virales y música magnética, las plataformas recomiendan tu contenido a millones de personas sin pagar un solo dólar en anuncios.
-                      </p>
-                      <p>
-                        Esto permite generar ingresos automáticos de dos formas principales: <strong className="text-white">fondos de creadores que pagan en dólares por reproducciones</strong> y <strong className="text-white">ventas directas como afiliado</strong> mediante un enlace en tu biografía, trabajando 100% desde casa y con total anonimato.
-                      </p>
+                      <div className="space-y-1.5 pl-1 text-gray-300">
+                        <p>
+                          • <strong className="text-white">El algoritmo solo mide retención:</strong> Muestra gratis videos con ganchos virales sin importar quién seas.
+                        </p>
+                        <p>
+                          • <strong className="text-white">Pagos directos en dólares:</strong> Cobras por reproducciones en TikTok/YouTube y comisiones de afiliados.
+                        </p>
+                        <p>
+                          • <strong className="text-white">100% anónimo:</strong> Todo desde el celular, sin dar la cara y sin grabar nada.
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -812,23 +816,23 @@ export default function App() {
       <section>
         <div className="container fade-in">
           <h2 className="text-center">Mirá la calidad de los videos</h2>
-          <div className="grid-3">
-            <div className="preview-card">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
+            <div className="preview-card !min-h-0">
               <video autoPlay muted loop playsInline preload="metadata" poster="/videos/poster1.jpg" src="/videos/preview1.mp4" />
             </div>
-            <div className="preview-card">
+            <div className="preview-card !min-h-0">
               <video autoPlay muted loop playsInline preload="metadata" poster="/videos/poster2.jpg" src="/videos/preview2.mp4" />
             </div>
-            <div className="preview-card">
+            <div className="preview-card !min-h-0">
               <video autoPlay muted loop playsInline preload="metadata" poster="/videos/poster3.jpg" src="/videos/preview3.mp4" />
             </div>
-            <div className="preview-card">
+            <div className="preview-card !min-h-0">
               <video autoPlay muted loop playsInline preload="metadata" poster="/videos/poster4.jpg" src="/videos/preview4.mp4" />
             </div>
-            <div className="preview-card">
+            <div className="preview-card !min-h-0">
               <video autoPlay muted loop playsInline preload="metadata" poster="/videos/poster5.jpg" src="/videos/preview5.mp4" />
             </div>
-            <div className="preview-card">
+            <div className="preview-card !min-h-0">
               <video autoPlay muted loop playsInline preload="metadata" poster="/videos/poster6.jpg" src="/videos/preview6.mp4" />
             </div>
           </div>
@@ -929,76 +933,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* Bonus Exclusivos Section */}
-      <section className="bg-alt">
-        <div className="container fade-in">
-          <h2 className="text-center">🎁 Bonus Exclusivos — Incluidos GRATIS con tu compra</h2>
-          <div className="bonus-grid">
-            <div className="bonus-card">
-              <div className="img-wrapper">
-                <span className="bonus-badge-top-left">BONO #01</span>
-                <span className="bonus-badge-top-right">GRATIS</span>
-                <img src="/imgs/bonus1.jpeg" alt="Guía de Horarios y Hashtags Virales" />
-              </div>
-              <div className="bonus-content">
-                <h3>⏰ Guía de Horarios y Hashtags Virales</h3>
-                <div className="bonus-value-tag">
-                  <span className="bonus-old-val">Valor: $27 USD</span>
-                  <span className="bonus-free-val">✓ 100% GRATIS</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="bonus-card">
-              <div className="img-wrapper">
-                <span className="bonus-badge-top-left">BONO #02</span>
-                <span className="bonus-badge-top-right">GRATIS</span>
-                <img src="/imgs/bonus2.jpeg" alt="Audios y Músicas Motivacionales" />
-              </div>
-              <div className="bonus-content">
-                <h3>🎵 Audios y Músicas Motivacionales</h3>
-                <div className="bonus-value-tag">
-                  <span className="bonus-old-val">Valor: $24 USD</span>
-                  <span className="bonus-free-val">✓ 100% GRATIS</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="bonus-card">
-              <div className="img-wrapper">
-                <span className="bonus-badge-top-left">BONO #03</span>
-                <span className="bonus-badge-top-right">GRATIS</span>
-                <picture>
-                  <source type="image/webp" srcSet="/imgs/bonus3.webp" />
-                  <img src="/imgs/bonus3.jpeg" alt="Monetización Oculta con IA" loading="lazy" />
-                </picture>
-              </div>
-              <div className="bonus-content">
-                <h3>🤖 Monetización Oculta con IA</h3>
-                <div className="bonus-value-tag">
-                  <span className="bonus-old-val">Valor: $37 USD</span>
-                  <span className="bonus-free-val">✓ 100% GRATIS</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="bonus-card">
-              <div className="img-wrapper">
-                <span className="bonus-badge-top-left">BONO #04</span>
-                <span className="bonus-badge-top-right">GRATIS</span>
-                <img src="/imgs/bonus4.jpeg" alt="Pack Profesional de Ediciones" />
-              </div>
-              <div className="bonus-content">
-                <h3>✨ Pack Profesional de Ediciones (Transiciones, Efectos Sonoros y Backgrounds)</h3>
-                <div className="bonus-value-tag">
-                  <span className="bonus-old-val">Valor: $47 USD</span>
-                  <span className="bonus-free-val">✓ 100% GRATIS</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Checkout / Pricing Section */}
       <section id="checkout" className="price-section">
