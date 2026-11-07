@@ -76,7 +76,7 @@ export function playRouletteSpinSound() {
   const now = ctx.currentTime + 0.02;
 
   // Timestamps for clicks (in seconds) matching the cubic-bezier(0.06, 0.88, 0.12, 1) curve
-  // Rapid at start, gradually stretching out to maximum suspense before landing on 90%
+  // Rapid at start, gradually stretching out to maximum suspense before landing on 85%
   const tickTimes: number[] = [
     // Fast initial phase (0 - 1.2s)
     0.00, 0.04, 0.08, 0.12, 0.16, 0.20, 0.24, 0.28, 0.32, 0.37, 
@@ -86,7 +86,7 @@ export function playRouletteSpinSound() {
     1.35, 1.46, 1.58, 1.70, 1.83, 1.97, 2.12, 2.28, 2.45, 2.63, 2.82, 3.02,
     // Suspense crawl phase (3.1 - 4.5s)
     3.24, 3.48, 3.74, 4.02, 4.32,
-    // Final heart-stopping suspense clicks into 90% slice (4.6 - 5.3s)
+    // Final heart-stopping suspense clicks into 85% slice (4.6 - 5.3s)
     4.64, 4.98, 5.30
   ];
 
@@ -97,7 +97,7 @@ export function playRouletteSpinSound() {
 }
 
 /**
- * Plays a triumphant, celebratory winner sound when landing on 90%.
+ * Plays a triumphant, celebratory winner sound when landing on 85%.
  * Features a bright ascending fanfare, punchy sub-kick, and shimmering jackpot bells.
  */
 export function playWinnerSound() {

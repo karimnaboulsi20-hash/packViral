@@ -11,42 +11,24 @@ import { playRouletteSpinSound, playWinnerSound, stopRouletteSounds } from './ut
 function triggerCelebration() {
   if (typeof window === 'undefined') return;
 
-  // Explosive blast of confetti party poppers from the center
+  // Quick, subtle celebratory pop that clears rapidly without blocking the view
   confetti({
-    particleCount: 110,
-    spread: 100,
-    origin: { y: 0.52 },
+    particleCount: 45,
+    spread: 65,
+    origin: { y: 0.62 },
     zIndex: 99999999,
-    colors: ['#CCFF00', '#FFD700', '#FF0055', '#00FFFF', '#FF9900', '#FFFFFF', '#A855F7'],
+    ticks: 80, // Fades and clears much faster (default is 200)
+    gravity: 1.4, // Falls faster so it doesn't obstruct the screen
+    scalar: 0.9,
+    colors: ['#CCFF00', '#FFD700', '#FFFFFF', '#00FFFF'],
   });
 
-  // Rapid celebratory fireworks cannons from both sides
-  const duration = 3.2 * 1000;
-  const animationEnd = Date.now() + duration;
-
-  const frame = () => {
-    confetti({
-      particleCount: 5,
-      angle: 60,
-      spread: 60,
-      origin: { x: 0, y: 0.65 },
-      zIndex: 99999999,
-      colors: ['#CCFF00', '#FFD700', '#FF0055', '#00FFFF', '#FFFFFF'],
-    });
-    confetti({
-      particleCount: 5,
-      angle: 120,
-      spread: 60,
-      origin: { x: 1, y: 0.65 },
-      zIndex: 99999999,
-      colors: ['#CCFF00', '#FFD700', '#FF0055', '#00FFFF', '#FFFFFF'],
-    });
-
-    if (Date.now() < animationEnd) {
-      requestAnimationFrame(frame);
-    }
-  };
-  frame();
+  // Automatically reset canvas after 1 second so screen remains 100% visible
+  setTimeout(() => {
+    try {
+      confetti.reset();
+    } catch {}
+  }, 1000);
 }
 
 const CHECKOUT_URL_STANDARD = 'https://pay.hotmart.com/W107986804C?checkoutMode=10';
@@ -166,11 +148,11 @@ const BUYER_LOCATIONS = [
 ];
 
 const WHEEL_SLICES = [
-  { label: '90%', bg: '#CCFF00', color: '#000000', isWinner: true },
+  { label: '90%', bg: '#CCFF00', color: '#000000' },
   { label: '0%', bg: '#374151', color: '#9CA3AF' },
   { label: '50%', bg: '#2563EB', color: '#FFFFFF' },
   { label: '0%', bg: '#374151', color: '#9CA3AF' },
-  { label: '90%', bg: '#CCFF00', color: '#000000' },
+  { label: '85%', bg: '#CCFF00', color: '#000000', isWinner: true },
   { label: '20%', bg: '#EA580C', color: '#FFFFFF' },
   { label: '0%', bg: '#374151', color: '#9CA3AF' },
   { label: '70%', bg: '#7C3AED', color: '#FFFFFF' },
@@ -370,9 +352,9 @@ export default function App() {
     setIsSpinning(true);
     playRouletteSpinSound();
 
-    // 8 full turns (2880 deg) with suspense slowdown to stop dead-center in 90% slice
+    // 8.5 full turns (3060 deg) with suspense slowdown to stop dead-center in the 85% slice (Slice 4 at 180 deg)
     const jitter = Math.floor(Math.random() * 5) - 2;
-    const targetRotation = 2880 + jitter;
+    const targetRotation = 3060 + jitter;
     setWheelRotation(targetRotation);
 
     setTimeout(() => {
@@ -381,7 +363,7 @@ export default function App() {
       playWinnerSound();
       triggerCelebration();
       trackEvent('ViewContent', {
-        content_name: 'Viral Pack Pro - Ruleta 90% Descuento Ganado',
+        content_name: 'Viral Pack Pro - Ruleta 85% Descuento Ganado',
         value: 5.9,
         currency: 'USD',
       });
@@ -430,7 +412,7 @@ export default function App() {
     <>
       {/* Discount Wheel Modal (Before First Question) */}
       {showWheelModal && (
-        <div className="fixed inset-0 z-[999999] flex items-center justify-center p-3 sm:p-4 bg-black/95 backdrop-blur-md animate-fadeIn overflow-y-auto">
+        <div className="fixed inset-0 z-[999999] flex items-center justify-center p-3 sm:p-4 bg-black/95 animate-fadeIn overflow-y-auto">
           <div className="relative w-full max-w-sm sm:max-w-md bg-[#121318] border-2 border-[#CCFF00]/50 rounded-3xl p-5 sm:p-6 shadow-[0_0_60px_rgba(204,255,0,0.25)] text-white text-center my-auto">
             {/* Header requested: Garanta seu desconto, boa sorte */}
             <div className="inline-block bg-[#CCFF00]/15 border border-[#CCFF00]/40 text-[#CCFF00] text-[11px] font-bold px-3 py-0.5 rounded-full uppercase tracking-wider mb-2">
@@ -559,14 +541,17 @@ export default function App() {
                   🎉 ¡DESCUENTO DESBLOQUEADO!
                 </div>
                 <h3 className="text-xl sm:text-2xl font-black text-white leading-tight mb-1.5">
-                  ¡GANASTE UN <span className="text-[#CCFF00]">90%</span> DE DESCUENTO!
+                  ¡GANASTE UN <span className="text-[#CCFF00]">85%</span> DE DESCUENTO!
                 </h3>
                 <p className="text-xs sm:text-sm text-gray-300 mb-4">
-                  Tu descuento del <strong className="text-white">90%</strong> fue aplicado con éxito para tu acceso.
+                  Tu descuento del <strong className="text-white">85%</strong> fue aplicado con éxito para tu acceso.
                 </p>
                 <button
                   type="button"
                   onClick={() => {
+                    try {
+                      confetti.reset();
+                    } catch {}
                     stopRouletteSounds();
                     setShowWheelModal(false);
                     setShowIntroModal(true);
@@ -583,7 +568,7 @@ export default function App() {
 
       {/* Question Modal Before Entering */}
       {showIntroModal && (
-        <div className="fixed inset-0 z-[999999] flex items-center justify-center p-4 bg-black/95 backdrop-blur-md animate-fadeIn">
+        <div className="fixed inset-0 z-[999999] flex items-center justify-center p-4 bg-black/95 animate-fadeIn">
           <div className="relative w-full max-w-md bg-[#121318] border border-[#CCFF00]/40 rounded-2xl p-5 sm:p-6 shadow-[0_0_40px_rgba(204,255,0,0.2)] text-white text-center">
             <div className="inline-block bg-[#CCFF00]/15 border border-[#CCFF00]/40 text-[#CCFF00] text-[11px] font-bold px-3 py-0.5 rounded-full uppercase tracking-wider mb-3">
               ⚡ PREGUNTA RÁPIDA
@@ -818,52 +803,52 @@ export default function App() {
             <div className="review-track">
               <picture>
                 <source type="image/webp" srcSet="/imgs/testemunho1.webp" />
-                <img src="/imgs/testemunho1.jpg" alt="Testimonio de cliente 1" className="review-img" loading="eager" />
+                <img src="/imgs/testemunho1.jpg" alt="Testimonio de cliente 1" className="review-img" loading="lazy" decoding="async" />
               </picture>
               <picture>
                 <source type="image/webp" srcSet="/imgs/testemunho2.webp" />
-                <img src="/imgs/testemunho2.jpg" alt="Testimonio de cliente 2" className="review-img" loading="eager" />
+                <img src="/imgs/testemunho2.jpg" alt="Testimonio de cliente 2" className="review-img" loading="lazy" decoding="async" />
               </picture>
               <picture>
                 <source type="image/webp" srcSet="/imgs/testemunho3.webp" />
-                <img src="/imgs/testemunho3.jpg" alt="Testimonio de cliente 3" className="review-img" loading="eager" />
+                <img src="/imgs/testemunho3.jpg" alt="Testimonio de cliente 3" className="review-img" loading="lazy" decoding="async" />
               </picture>
               <picture>
                 <source type="image/webp" srcSet="/imgs/testemunho4.webp" />
-                <img src="/imgs/testemunho4.jpg" alt="Testimonio de cliente 4" className="review-img" loading="eager" />
+                <img src="/imgs/testemunho4.jpg" alt="Testimonio de cliente 4" className="review-img" loading="lazy" decoding="async" />
               </picture>
               <picture>
                 <source type="image/webp" srcSet="/imgs/testemunho5.webp" />
-                <img src="/imgs/testemunho5.jpg" alt="Testimonio de cliente 5" className="review-img" loading="eager" />
+                <img src="/imgs/testemunho5.jpg" alt="Testimonio de cliente 5" className="review-img" loading="lazy" decoding="async" />
               </picture>
               <picture>
                 <source type="image/webp" srcSet="/imgs/testemunho6.webp" />
-                <img src="/imgs/testemunho6.jpg" alt="Testimonio de cliente 6" className="review-img" loading="eager" />
+                <img src="/imgs/testemunho6.jpg" alt="Testimonio de cliente 6" className="review-img" loading="lazy" decoding="async" />
               </picture>
               {/* Duplicate track for infinite loop */}
               <picture>
                 <source type="image/webp" srcSet="/imgs/testemunho1.webp" />
-                <img src="/imgs/testemunho1.jpg" alt="Testimonio de cliente 1" className="review-img" loading="eager" />
+                <img src="/imgs/testemunho1.jpg" alt="Testimonio de cliente 1" className="review-img" loading="lazy" decoding="async" />
               </picture>
               <picture>
                 <source type="image/webp" srcSet="/imgs/testemunho2.webp" />
-                <img src="/imgs/testemunho2.jpg" alt="Testimonio de cliente 2" className="review-img" loading="eager" />
+                <img src="/imgs/testemunho2.jpg" alt="Testimonio de cliente 2" className="review-img" loading="lazy" decoding="async" />
               </picture>
               <picture>
                 <source type="image/webp" srcSet="/imgs/testemunho3.webp" />
-                <img src="/imgs/testemunho3.jpg" alt="Testimonio de cliente 3" className="review-img" loading="eager" />
+                <img src="/imgs/testemunho3.jpg" alt="Testimonio de cliente 3" className="review-img" loading="lazy" decoding="async" />
               </picture>
               <picture>
                 <source type="image/webp" srcSet="/imgs/testemunho4.webp" />
-                <img src="/imgs/testemunho4.jpg" alt="Testimonio de cliente 4" className="review-img" loading="eager" />
+                <img src="/imgs/testemunho4.jpg" alt="Testimonio de cliente 4" className="review-img" loading="lazy" decoding="async" />
               </picture>
               <picture>
                 <source type="image/webp" srcSet="/imgs/testemunho5.webp" />
-                <img src="/imgs/testemunho5.jpg" alt="Testimonio de cliente 5" className="review-img" loading="eager" />
+                <img src="/imgs/testemunho5.jpg" alt="Testimonio de cliente 5" className="review-img" loading="lazy" decoding="async" />
               </picture>
               <picture>
                 <source type="image/webp" srcSet="/imgs/testemunho6.webp" />
-                <img src="/imgs/testemunho6.jpg" alt="Testimonio de cliente 6" className="review-img" loading="eager" />
+                <img src="/imgs/testemunho6.jpg" alt="Testimonio de cliente 6" className="review-img" loading="lazy" decoding="async" />
               </picture>
             </div>
           </div>
@@ -876,22 +861,22 @@ export default function App() {
           <h2 className="text-center">Mirá la calidad de los videos</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
             <div className="preview-card !min-h-0">
-              <video autoPlay muted loop playsInline preload="auto" disablePictureInPicture poster="/videos/poster1.jpg" src="/videos/preview1.mp4" />
+              <video autoPlay muted loop playsInline preload="metadata" disablePictureInPicture poster="/videos/poster1.jpg" src="/videos/preview1.mp4" />
             </div>
             <div className="preview-card !min-h-0">
-              <video autoPlay muted loop playsInline preload="auto" disablePictureInPicture poster="/videos/poster2.jpg" src="/videos/preview2.mp4" />
+              <video autoPlay muted loop playsInline preload="metadata" disablePictureInPicture poster="/videos/poster2.jpg" src="/videos/preview2.mp4" />
             </div>
             <div className="preview-card !min-h-0">
-              <video autoPlay muted loop playsInline preload="auto" disablePictureInPicture poster="/videos/poster3.jpg" src="/videos/preview3.mp4" />
+              <video autoPlay muted loop playsInline preload="metadata" disablePictureInPicture poster="/videos/poster3.jpg" src="/videos/preview3.mp4" />
             </div>
             <div className="preview-card !min-h-0">
-              <video autoPlay muted loop playsInline preload="auto" disablePictureInPicture poster="/videos/poster4.jpg" src="/videos/preview4.mp4" />
+              <video autoPlay muted loop playsInline preload="metadata" disablePictureInPicture poster="/videos/poster4.jpg" src="/videos/preview4.mp4" />
             </div>
             <div className="preview-card !min-h-0">
-              <video autoPlay muted loop playsInline preload="auto" disablePictureInPicture poster="/videos/poster5.jpg" src="/videos/preview5.mp4" />
+              <video autoPlay muted loop playsInline preload="metadata" disablePictureInPicture poster="/videos/poster5.jpg" src="/videos/preview5.mp4" />
             </div>
             <div className="preview-card !min-h-0">
-              <video autoPlay muted loop playsInline preload="auto" disablePictureInPicture poster="/videos/poster6.jpg" src="/videos/preview6.mp4" />
+              <video autoPlay muted loop playsInline preload="metadata" disablePictureInPicture poster="/videos/poster6.jpg" src="/videos/preview6.mp4" />
             </div>
           </div>
           <div className="text-center" style={{ marginTop: '40px' }}>
@@ -927,7 +912,7 @@ export default function App() {
           <div className="niche-grid">
             <div className="niche-card">
               <div className="niche-img-wrapper">
-                <img src="/imgs/nicho1.jpeg" alt="Autos de Lujo" />
+                <img src="/imgs/nicho1.jpeg" alt="Autos de Lujo" loading="lazy" decoding="async" />
                 <div className="niche-overlay" />
                 <h3 className="niche-title">AUTOS DE LUJO</h3>
               </div>
@@ -936,7 +921,7 @@ export default function App() {
 
             <div className="niche-card">
               <div className="niche-img-wrapper">
-                <img src="/imgs/nicho2.jpeg" alt="Fitness" />
+                <img src="/imgs/nicho2.jpeg" alt="Fitness" loading="lazy" decoding="async" />
                 <div className="niche-overlay" />
                 <h3 className="niche-title">FITNESS</h3>
               </div>
@@ -945,7 +930,7 @@ export default function App() {
 
             <div className="niche-card">
               <div className="niche-img-wrapper">
-                <img src="/imgs/nicho3.jpeg" alt="Motivación" />
+                <img src="/imgs/nicho3.jpeg" alt="Motivación" loading="lazy" decoding="async" />
                 <div className="niche-overlay" />
                 <h3 className="niche-title">MOTIVACIÓN</h3>
               </div>
@@ -954,7 +939,7 @@ export default function App() {
 
             <div className="niche-card">
               <div className="niche-img-wrapper">
-                <img src="/imgs/nicho4.jpeg" alt="Películas y Series" />
+                <img src="/imgs/nicho4.jpeg" alt="Películas y Series" loading="lazy" decoding="async" />
                 <div className="niche-overlay" />
                 <h3 className="niche-title">PELÍCULAS Y SERIES</h3>
               </div>
@@ -963,7 +948,7 @@ export default function App() {
 
             <div className="niche-card">
               <div className="niche-img-wrapper">
-                <img src="/imgs/nicho5.jpeg" alt="Aesthetic & Lujo" />
+                <img src="/imgs/nicho5.jpeg" alt="Aesthetic & Lujo" loading="lazy" decoding="async" />
                 <div className="niche-overlay" />
                 <h3 className="niche-title">AESTHETIC & LUJO</h3>
               </div>
@@ -972,7 +957,7 @@ export default function App() {
 
             <div className="niche-card">
               <div className="niche-img-wrapper">
-                <img src="/imgs/nicho6.jpeg" alt="Naturaleza" />
+                <img src="/imgs/nicho6.jpeg" alt="Naturaleza" loading="lazy" decoding="async" />
                 <div className="niche-overlay" />
                 <h3 className="niche-title">NATURALEZA</h3>
               </div>
