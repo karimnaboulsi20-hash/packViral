@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Clock, Globe, LockOpen, Sparkles, TrendingUp } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { playRouletteSpinSound, playWinnerSound, stopRouletteSounds } from './utils/rouletteAudio';
@@ -186,6 +186,11 @@ export default function App() {
 
   const [liveViewers, setLiveViewers] = useState(74);
   const [vslPlaying, setVslPlaying] = useState(false);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  const handleStartVsl = () => {
+    setVslPlaying(true);
+  };
 
   useEffect(() => {
     trackEvent('PageView');
@@ -295,7 +300,6 @@ export default function App() {
     document.addEventListener('visibilitychange', handleVisibility);
 
     // IntersectionObserver: ONLY observe grid preview videos, NEVER the carousel videos
-    // (carousel videos move continuously horizontally; pausing them breaks infinite loop on iOS)
     const previewVideos = document.querySelectorAll<HTMLVideoElement>('.preview-card video');
     const observer = new IntersectionObserver(
       (entries) => {
@@ -316,7 +320,7 @@ export default function App() {
 
     previewVideos.forEach((vid) => observer.observe(vid));
 
-    // Watchdog timer to ensure carousel videos never stay frozen on iPhone
+    // Watchdog timer to ensure carousel videos never stay frozen
     const watchdog = setInterval(() => {
       document.querySelectorAll<HTMLVideoElement>('.carousel-track video').forEach((vid) => {
         if (vid.paused) {
@@ -640,13 +644,13 @@ export default function App() {
           <p className="text-sm sm:text-base md:text-lg font-semibold text-amber-300/90 tracking-wide mb-6">
             (Igual yo y más de 100.000 personas)
           </p>
-          {/* 9:16 YouTube VSL Player (Zero-Lag Direct Play) */}
+          {/* 9:16 YouTube VSL Player (Instant Play with Sound) */}
           <div className="max-w-[300px] sm:max-w-[340px] mx-auto mb-6 relative">
             <div className="aspect-[9/16] w-full rounded-2xl overflow-hidden border-2 border-[#CCFF00]/60 shadow-[0_0_50px_rgba(204,255,0,0.35)] bg-black relative">
               {!vslPlaying ? (
                 <div
-                  onClick={() => setVslPlaying(true)}
-                  className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-gradient-to-b from-black/85 via-black/70 to-black/95 cursor-pointer group transition-all p-4 text-center select-none"
+                  onClick={handleStartVsl}
+                  className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-gradient-to-b from-black/85 via-black/75 to-black/95 cursor-pointer group transition-all p-4 text-center select-none"
                 >
                   <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#CCFF00]/30 via-transparent to-transparent pointer-events-none" />
 
@@ -665,7 +669,8 @@ export default function App() {
                 </div>
               ) : (
                 <iframe
-                  src="https://www.youtube-nocookie.com/embed/2kX21NGtPdQ?autoplay=1&mute=0&loop=1&playlist=2kX21NGtPdQ&controls=1&playsinline=1"
+                  ref={iframeRef}
+                  src="https://www.youtube.com/embed/2kX21NGtPdQ?autoplay=1&mute=0&loop=1&playlist=2kX21NGtPdQ&controls=1&playsinline=1&rel=0"
                   title="Viral Pack Pro VSL"
                   className="absolute inset-0 w-full h-full border-0 pointer-events-auto"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
