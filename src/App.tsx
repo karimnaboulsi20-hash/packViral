@@ -671,13 +671,15 @@ export default function App() {
           {/* VSL (Video Sales Letter) Section - 9:16 Vertical Format */}
           <div className="w-full max-w-[340px] sm:max-w-[380px] mx-auto my-6 sm:my-8 px-2">
             {/* VSL 9:16 Video Container */}
-            <div ref={vslContainerRef} className="relative w-full aspect-[9/16] rounded-2xl sm:rounded-3xl overflow-hidden border-2 border-[#CCFF00]/60 shadow-[0_0_50px_rgba(204,255,0,0.3)] bg-black group">
+            <div ref={vslContainerRef} className="vsl-container relative w-full aspect-[9/16] rounded-2xl sm:rounded-3xl overflow-hidden border-2 border-[#CCFF00]/60 shadow-[0_0_40px_rgba(204,255,0,0.25)] bg-black group touch-pan-y">
               <iframe
                 ref={vslIframeRef}
                 id="vsl-youtube-player"
-                src="https://www.youtube.com/embed/2kX21NGtPdQ?enablejsapi=1&autoplay=1&mute=1&playsinline=1&controls=1&rel=0&modestbranding=1&iv_load_policy=3&loop=1&playlist=2kX21NGtPdQ"
+                src="https://www.youtube.com/embed/2kX21NGtPdQ?enablejsapi=1&autoplay=1&mute=1&playsinline=1&controls=1&rel=0&modestbranding=1&iv_load_policy=3&vq=hd1080&loop=1&playlist=2kX21NGtPdQ"
                 title="Video Explicativo Viral Pack Pro"
                 className="absolute inset-0 w-full h-full border-0 object-cover"
+                loading="eager"
+                {...{ fetchpriority: 'high' } as any}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
               />
