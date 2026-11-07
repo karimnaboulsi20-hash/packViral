@@ -186,6 +186,9 @@ export default function App() {
 
   const [liveViewers, setLiveViewers] = useState(74);
   const [isVslSoundActivated, setIsVslSoundActivated] = useState(false);
+  const [vslSrc, setVslSrc] = useState(
+    'https://www.youtube.com/embed/2kX21NGtPdQ?enablejsapi=1&autoplay=1&mute=1&playsinline=1&controls=1&rel=0&modestbranding=1&iv_load_policy=3&vq=hd1080&loop=1&playlist=2kX21NGtPdQ'
+  );
   const vslIframeRef = useRef<HTMLIFrameElement>(null);
   const vslContainerRef = useRef<HTMLDivElement>(null);
 
@@ -413,24 +416,9 @@ export default function App() {
 
   const handleActivateVslSound = () => {
     setIsVslSoundActivated(true);
-    if (vslIframeRef.current?.contentWindow) {
-      vslIframeRef.current.contentWindow.postMessage(
-        JSON.stringify({ event: 'command', func: 'unMute', args: [] }),
-        '*'
-      );
-      vslIframeRef.current.contentWindow.postMessage(
-        JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }),
-        '*'
-      );
-      vslIframeRef.current.contentWindow.postMessage(
-        JSON.stringify({ event: 'command', func: 'seekTo', args: [0, true] }),
-        '*'
-      );
-      vslIframeRef.current.contentWindow.postMessage(
-        JSON.stringify({ event: 'command', func: 'playVideo', args: [] }),
-        '*'
-      );
-    }
+    setVslSrc(
+      'https://www.youtube.com/embed/2kX21NGtPdQ?autoplay=1&mute=0&playsinline=1&controls=1&rel=0&modestbranding=1&iv_load_policy=3&vq=hd1080&start=0&loop=1&playlist=2kX21NGtPdQ'
+    );
     trackEvent('ViewContent', {
       content_name: 'VSL - Video Iniciado con Sonido',
     });
@@ -675,7 +663,7 @@ export default function App() {
               <iframe
                 ref={vslIframeRef}
                 id="vsl-youtube-player"
-                src="https://www.youtube.com/embed/2kX21NGtPdQ?enablejsapi=1&autoplay=1&mute=1&playsinline=1&controls=1&rel=0&modestbranding=1&iv_load_policy=3&vq=hd1080&loop=1&playlist=2kX21NGtPdQ"
+                src={vslSrc}
                 title="Video Explicativo Viral Pack Pro"
                 className="absolute inset-0 w-full h-full border-0 object-cover"
                 loading="eager"
