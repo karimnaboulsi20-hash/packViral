@@ -670,16 +670,6 @@ export default function App() {
 
           {/* VSL (Video Sales Letter) Section - 9:16 Vertical Format */}
           <div className="w-full max-w-[340px] sm:max-w-[380px] mx-auto my-6 sm:my-8 px-2">
-            {/* Header / Title in Spanish */}
-            <div className="flex flex-col items-center justify-center gap-1.5 mb-3.5 text-center">
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-400/50 text-emerald-300 text-xs sm:text-sm font-black uppercase tracking-wider shadow-[0_0_20px_rgba(16,185,129,0.3)] animate-pulse">
-                🎬 MIRA PARA ENTENDER MEJOR
-              </span>
-              <p className="text-xs sm:text-sm font-semibold text-gray-300">
-                (Mira este video corto para entender cómo funciona todo el proceso)
-              </p>
-            </div>
-
             {/* VSL 9:16 Video Container */}
             <div ref={vslContainerRef} className="relative w-full aspect-[9/16] rounded-2xl sm:rounded-3xl overflow-hidden border-2 border-[#CCFF00]/60 shadow-[0_0_50px_rgba(204,255,0,0.3)] bg-black group">
               <iframe
@@ -703,7 +693,7 @@ export default function App() {
                       handleActivateVslSound();
                     }
                   }}
-                  className="absolute inset-0 z-20 flex flex-col items-center justify-between p-4 sm:p-6 bg-black/75 backdrop-blur-[3px] cursor-pointer select-none transition-all duration-300 hover:bg-black/65"
+                  className="absolute inset-0 z-20 flex flex-col items-center justify-between p-4 sm:p-6 bg-black/92 cursor-pointer select-none"
                 >
                   {/* Top Alert Banner */}
                   <div className="w-full py-2.5 px-4 rounded-xl bg-red-600/95 border border-red-400 text-white text-xs sm:text-sm font-black uppercase tracking-wider text-center shadow-lg animate-bounce">
