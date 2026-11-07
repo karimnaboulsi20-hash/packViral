@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Clock, Globe, LockOpen, Sparkles, TrendingUp } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { playRouletteSpinSound, playWinnerSound, stopRouletteSounds } from './utils/rouletteAudio';
@@ -185,12 +185,7 @@ export default function App() {
   });
 
   const [liveViewers, setLiveViewers] = useState(74);
-  const [isVslSoundActivated, setIsVslSoundActivated] = useState(false);
-  const [vslSrc, setVslSrc] = useState(
-    'https://www.youtube.com/embed/2kX21NGtPdQ?enablejsapi=1&autoplay=1&mute=1&playsinline=1&controls=1&rel=0&modestbranding=1&iv_load_policy=3&vq=hd1080&loop=1&playlist=2kX21NGtPdQ'
-  );
-  const vslIframeRef = useRef<HTMLIFrameElement>(null);
-  const vslContainerRef = useRef<HTMLDivElement>(null);
+  const [vslUnmuted, setVslUnmuted] = useState(false);
 
   useEffect(() => {
     trackEvent('PageView');
@@ -412,16 +407,6 @@ export default function App() {
       currency: 'USD',
     });
     setIsModalOpen(true);
-  };
-
-  const handleActivateVslSound = () => {
-    setIsVslSoundActivated(true);
-    setVslSrc(
-      'https://www.youtube.com/embed/2kX21NGtPdQ?autoplay=1&mute=0&playsinline=1&controls=1&rel=0&modestbranding=1&iv_load_policy=3&vq=hd1080&start=0&loop=1&playlist=2kX21NGtPdQ'
-    );
-    trackEvent('ViewContent', {
-      content_name: 'VSL - Video Iniciado con Sonido',
-    });
   };
 
   return (
@@ -655,67 +640,40 @@ export default function App() {
           <p className="text-sm sm:text-base md:text-lg font-semibold text-amber-300/90 tracking-wide mb-6">
             (Igual yo y más de 100.000 personas)
           </p>
-
-          {/* VSL (Video Sales Letter) Section - 9:16 Vertical Format */}
-          <div className="w-full max-w-[340px] sm:max-w-[380px] mx-auto my-6 sm:my-8 px-2">
-            {/* VSL 9:16 Video Container */}
-            <div ref={vslContainerRef} className="vsl-container relative w-full aspect-[9/16] rounded-2xl sm:rounded-3xl overflow-hidden border-2 border-[#CCFF00]/60 shadow-[0_0_40px_rgba(204,255,0,0.25)] bg-black group touch-pan-y">
+          {/* 9:16 YouTube VSL Player with Sound Overlay */}
+          <div className="max-w-[300px] sm:max-w-[340px] mx-auto mb-6 relative">
+            <div className="aspect-[9/16] w-full rounded-2xl overflow-hidden border-2 border-[#CCFF00]/60 shadow-[0_0_50px_rgba(204,255,0,0.35)] bg-black relative">
               <iframe
-                ref={vslIframeRef}
-                id="vsl-youtube-player"
-                src={vslSrc}
-                title="Video Explicativo Viral Pack Pro"
-                className="absolute inset-0 w-full h-full border-0 object-cover"
-                loading="eager"
-                {...{ fetchpriority: 'high' } as any}
+                src={
+                  vslUnmuted
+                    ? "https://www.youtube-nocookie.com/embed/2kX21NGtPdQ?autoplay=1&mute=0&loop=1&playlist=2kX21NGtPdQ&controls=1&playsinline=1&start=0"
+                    : "https://www.youtube-nocookie.com/embed/2kX21NGtPdQ?autoplay=1&mute=1&loop=1&playlist=2kX21NGtPdQ&controls=0&modestbranding=1&playsinline=1"
+                }
+                title="Viral Pack Pro VSL"
+                className="absolute inset-0 w-full h-full border-0 pointer-events-auto"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
               />
 
-              {/* Sound Activation Overlay with HAZ CLIC AQUÍ */}
-              {!isVslSoundActivated && (
+              {!vslUnmuted && (
                 <div
-                  onClick={handleActivateVslSound}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      handleActivateVslSound();
-                    }
-                  }}
-                  className="absolute inset-0 z-20 flex flex-col items-center justify-between p-4 sm:p-6 bg-black/92 cursor-pointer select-none"
+                  onClick={() => setVslUnmuted(true)}
+                  className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-black/70 backdrop-blur-[2px] cursor-pointer group transition-all p-4 text-center"
                 >
-                  {/* Top Alert Banner */}
-                  <div className="w-full py-2.5 px-4 rounded-xl bg-red-600/95 border border-red-400 text-white text-xs sm:text-sm font-black uppercase tracking-wider text-center shadow-lg animate-bounce">
-                    🔊 ¡Video listo! Activa el sonido
+                  <div className="bg-[#CCFF00] hover:bg-[#bbf000] text-black font-black px-6 py-4 rounded-full shadow-[0_0_35px_rgba(204,255,0,0.7)] flex items-center gap-3 animate-bounce transition-transform group-hover:scale-105">
+                    <span className="text-2xl">🔊</span>
+                    <span className="text-sm sm:text-base uppercase tracking-wider">Haz clic para activar el sonido</span>
                   </div>
-
-                  {/* Center Pulsing HAZ CLIC AQUÍ Button */}
-                  <div className="flex flex-col items-center justify-center my-auto text-center group-hover:scale-105 transition-transform duration-300">
-                    <div className="relative mb-3 sm:mb-4">
-                      <span className="absolute -inset-4 rounded-full bg-[#CCFF00] opacity-50 animate-ping" />
-                      <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-[#CCFF00] hover:bg-[#bbf000] text-black flex items-center justify-center shadow-[0_0_40px_rgba(204,255,0,0.9)]">
-                        <svg className="w-10 h-10 sm:w-12 sm:h-12 fill-current" viewBox="0 0 24 24">
-                          <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-                        </svg>
-                      </div>
-                    </div>
-                    <span className="text-sm sm:text-base font-black text-black bg-[#CCFF00] px-5 py-2.5 rounded-full uppercase tracking-wider shadow-lg">
-                      HAZ CLIC AQUÍ
-                    </span>
-                  </div>
-
-                  {/* Bottom Prompt */}
-                  <div className="text-xs text-gray-200 font-bold bg-black/85 px-4 py-1.5 rounded-full border border-white/20 shadow-md">
-                    👆 Haz clic para iniciar con sonido desde el inicio
-                  </div>
+                  <p className="text-white text-xs sm:text-sm font-bold mt-4 px-2 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)] leading-relaxed">
+                    Haz clic en el sonido para comenzar el video desde el inicio con audio
+                  </p>
                 </div>
               )}
             </div>
           </div>
 
           <p className="text-xl sm:text-2xl md:text-3xl font-semibold text-gray-300 tracking-normal leading-snug max-w-4xl mx-auto mb-8">
-            Quédate aquí y aprende cómo hacerlo, te enseño todo justo abajo ⤵️
+            Quédate aquí y aprende cómo hacerlo, te enseño todo en el video abajo ⤵️
           </p>
 
           <div className="mockup mockup-carousel">
