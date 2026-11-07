@@ -185,7 +185,7 @@ export default function App() {
   });
 
   const [liveViewers, setLiveViewers] = useState(74);
-  const [vslUnmuted, setVslUnmuted] = useState(false);
+  const [vslPlaying, setVslPlaying] = useState(false);
 
   useEffect(() => {
     trackEvent('PageView');
@@ -640,34 +640,37 @@ export default function App() {
           <p className="text-sm sm:text-base md:text-lg font-semibold text-amber-300/90 tracking-wide mb-6">
             (Igual yo y más de 100.000 personas)
           </p>
-          {/* 9:16 YouTube VSL Player with Sound Overlay */}
+          {/* 9:16 YouTube VSL Player (Zero-Lag Direct Play) */}
           <div className="max-w-[300px] sm:max-w-[340px] mx-auto mb-6 relative">
             <div className="aspect-[9/16] w-full rounded-2xl overflow-hidden border-2 border-[#CCFF00]/60 shadow-[0_0_50px_rgba(204,255,0,0.35)] bg-black relative">
-              <iframe
-                src={
-                  vslUnmuted
-                    ? "https://www.youtube-nocookie.com/embed/2kX21NGtPdQ?autoplay=1&mute=0&loop=1&playlist=2kX21NGtPdQ&controls=1&playsinline=1&start=0"
-                    : "https://www.youtube-nocookie.com/embed/2kX21NGtPdQ?autoplay=1&mute=1&loop=1&playlist=2kX21NGtPdQ&controls=0&modestbranding=1&playsinline=1"
-                }
-                title="Viral Pack Pro VSL"
-                className="absolute inset-0 w-full h-full border-0 pointer-events-auto"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-              />
-
-              {!vslUnmuted && (
+              {!vslPlaying ? (
                 <div
-                  onClick={() => setVslUnmuted(true)}
-                  className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-black/70 backdrop-blur-[2px] cursor-pointer group transition-all p-4 text-center"
+                  onClick={() => setVslPlaying(true)}
+                  className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-gradient-to-b from-black/85 via-black/70 to-black/95 cursor-pointer group transition-all p-4 text-center select-none"
                 >
-                  <div className="bg-[#CCFF00] hover:bg-[#bbf000] text-black font-black px-6 py-4 rounded-full shadow-[0_0_35px_rgba(204,255,0,0.7)] flex items-center gap-3 animate-bounce transition-transform group-hover:scale-105">
-                    <span className="text-2xl">🔊</span>
-                    <span className="text-sm sm:text-base uppercase tracking-wider">Haz clic para activar el sonido</span>
+                  <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#CCFF00]/30 via-transparent to-transparent pointer-events-none" />
+
+                  <div className="relative z-10 bg-[#CCFF00] hover:bg-[#bbf000] text-black font-black w-20 h-20 rounded-full shadow-[0_0_40px_rgba(204,255,0,0.8)] flex items-center justify-center animate-bounce transition-transform group-hover:scale-110 mb-4">
+                    <span className="text-3xl ml-1">▶</span>
                   </div>
-                  <p className="text-white text-xs sm:text-sm font-bold mt-4 px-2 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)] leading-relaxed">
-                    Haz clic en el sonido para comenzar el video desde el inicio con audio
-                  </p>
+
+                  <div className="relative z-10 bg-[#121318]/95 border border-[#CCFF00]/60 px-5 py-3 rounded-2xl shadow-xl">
+                    <div className="text-[#CCFF00] font-black text-xs uppercase tracking-wider mb-1 flex items-center justify-center gap-1.5">
+                      <span>🔊</span> Activar Sonido
+                    </div>
+                    <p className="text-white text-xs sm:text-sm font-bold leading-snug">
+                      Haz clic para iniciar el video con audio
+                    </p>
+                  </div>
                 </div>
+              ) : (
+                <iframe
+                  src="https://www.youtube-nocookie.com/embed/2kX21NGtPdQ?autoplay=1&mute=0&loop=1&playlist=2kX21NGtPdQ&controls=1&playsinline=1"
+                  title="Viral Pack Pro VSL"
+                  className="absolute inset-0 w-full h-full border-0 pointer-events-auto"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                />
               )}
             </div>
           </div>
