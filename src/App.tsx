@@ -1452,43 +1452,6 @@ export default function App() {
           </div>
         </div>
       )}
-
-      {/* Floating WhatsApp Support Widget */}
-      <aside aria-label="Soporte WhatsApp" className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-[900]">
-        <a
-          href="https://wa.me/5515988081810?text=Hola%2C%20tengo%20una%20duda%20sobre%20el%20Viral%20Pack%20Pro"
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={() => {
-            trackEvent('Contact', {
-              content_name: 'WhatsApp Soporte Flotante',
-            });
-          }}
-          className="flex items-center gap-2.5 sm:gap-3 bg-[#111317]/95 hover:bg-[#181a20] border border-[#25D366]/60 hover:border-[#25D366] text-white pl-3.5 pr-2 sm:pl-4 sm:pr-2.5 py-2 sm:py-2.5 rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.6),0_0_20px_rgba(37,211,102,0.3)] transition-all duration-300 hover:scale-[1.04] active:scale-[0.98] group select-none backdrop-blur-sm"
-          title="¿Tienes dudas? Manda un mensaje aquí"
-        >
-          <div className="flex flex-col text-left leading-tight">
-            <span className="text-[11px] sm:text-xs font-medium text-gray-300">
-              ¿Tienes dudas?
-            </span>
-            <span className="text-xs sm:text-sm font-black text-[#25D366] flex items-center gap-1">
-              Manda un mensaje aquí <span className="inline-block text-[11px] group-hover:translate-x-0.5 transition-transform">→</span>
-            </span>
-          </div>
-
-          {/* Pulsing WhatsApp Logo */}
-          <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#25D366] flex items-center justify-center shrink-0 shadow-[0_2px_12px_rgba(37,211,102,0.5)] group-hover:shadow-[0_4px_22px_rgba(37,211,102,0.8)] transition-shadow">
-            <span className="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-30" />
-            <svg
-              className="w-5 h-5 sm:w-6 sm:h-6 fill-white relative z-10"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path d="M17.472 14.382c-.301-.15-1.78-.879-2.056-.98-.276-.1-.477-.15-.678.15-.2.301-.778.98-.954 1.18-.176.2-.352.226-.653.075-.301-.15-1.272-.469-2.423-1.496-.896-.799-1.501-1.787-1.677-2.088-.176-.301-.019-.464.132-.614.136-.135.301-.352.452-.528.15-.176.2-.301.301-.502.101-.2.05-.376-.025-.527-.075-.15-.678-1.634-.929-2.237-.245-.588-.494-.508-.678-.518-.176-.009-.377-.01-.578-.01-.201 0-.527.075-.803.376-.276.301-1.054 1.03-1.054 2.512 0 1.482 1.079 2.912 1.23 3.113.15.201 2.124 3.243 5.145 4.548.719.311 1.28.497 1.718.636.722.229 1.378.197 1.898.119.579-.087 1.78-.728 2.031-1.431.251-.703.251-1.305.176-1.431-.075-.126-.276-.201-.577-.351zM12.04 21.75c-1.75 0-3.467-.47-4.97-1.36l-.356-.21-3.694.97.987-3.6-.23-.367A9.687 9.687 0 0 1 2.375 12.04C2.375 6.71 6.71 2.375 12.04 2.375c2.58 0 5.006 1.004 6.83 2.829a9.61 9.61 0 0 1 2.83 6.836c0 5.33-4.335 9.71-9.66 9.71zm8.016-17.68A11.272 11.272 0 0 0 12.04.875C5.88.875.875 5.88.875 12.04c0 1.97.514 3.89 1.492 5.584L.625 23.375l5.908-1.55a11.14 11.14 0 0 0 5.507 1.45h.005c6.16 0 11.165-5.005 11.165-11.235 0-2.99-1.165-5.8-3.154-7.97z" />
-            </svg>
-          </div>
-        </a>
-      </aside>
     </>
   );
 }
